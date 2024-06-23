@@ -1,33 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { getMoviesUpcoming } from "../api/tmdb-api";
 import { BaseMovieProps } from "../types/interfaces";
+import { useQuery } from "react-query";
+import Spinner from "../components/spinner";
+import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import { MoviesContext } from "../contexts/moviesContext";
 
 const UpcomingMoviesPage: React.FC = () => {
-  const [movies, setMovies] = useState<BaseMovieProps[]>([]);
-  const favourites = movies.filter((m) => m.favourite);
-  console.log(movies);
-  localStorage.setItem("favourites", JSON.stringify(favourites));
-  const addToFavourites = (movieId: number) => {
-    const updatedMovies = movies.map((m: BaseMovieProps) =>
-      m.id === movieId ? { ...m, favourite: true } : m
-    );
-    setMovies(updatedMovies);
-  };
+  const {
+    data: movies,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<BaseMovieProps[], Error>("upcomingMovies", getMoviesUpcoming);
 
-  useEffect(() => {
-    getMoviesUpcoming().then((movies) => {
-      setMovies(movies);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { addToFavourites } = useContext(MoviesContext);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
 
   return (
     <PageTemplate
       title='Upcoming Movies'
-      movies={movies}
-      selectFavourite={addToFavourites}
+      movies={movies || []}
+      action={(movie: BaseMovieProps) => {
+        return (
+          <AddToFavouritesIcon
+            movie={movie}
+            onClick={() => addToFavourites(movie.id)}
+          />
+        );
+      }}
     />
   );
 };
+
 export default UpcomingMoviesPage;
