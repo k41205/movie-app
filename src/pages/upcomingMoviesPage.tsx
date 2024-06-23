@@ -4,7 +4,7 @@ import { getMoviesUpcoming } from "../api/tmdb-api";
 import { BaseMovieProps } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import { MoviesContext } from "../contexts/moviesContext";
 
 const UpcomingMoviesPage: React.FC = () => {
@@ -15,7 +15,7 @@ const UpcomingMoviesPage: React.FC = () => {
     isError,
   } = useQuery<BaseMovieProps[], Error>("upcomingMovies", getMoviesUpcoming);
 
-  const { addToFavourites } = useContext(MoviesContext);
+  const { addToMustWatch } = useContext(MoviesContext); // Assuming you have this context function for 'Must watch' list
 
   if (isLoading) {
     return <Spinner />;
@@ -30,12 +30,7 @@ const UpcomingMoviesPage: React.FC = () => {
       title='Upcoming Movies'
       movies={movies || []}
       action={(movie: BaseMovieProps) => {
-        return (
-          <AddToFavouritesIcon
-            movie={movie}
-            onClick={() => addToFavourites(movie.id)}
-          />
-        );
+        return <PlaylistAddIcon onClick={() => addToMustWatch(movie.id)} />;
       }}
     />
   );
