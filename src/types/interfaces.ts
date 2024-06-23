@@ -20,9 +20,8 @@ export interface BaseMovieProps {
 
 export interface BaseMovieListProps {
   movies: BaseMovieProps[];
-  selectFavourite: (movieId: number) => void; //add this
+  action: (m: BaseMovieProps) => React.ReactNode;
 }
-
 export interface MovieDetailsProps extends BaseMovieProps {
   genres: {
     id: number;
@@ -36,7 +35,7 @@ export interface MovieDetailsProps extends BaseMovieProps {
 
 export interface MovieImage {
   file_path: string;
-  aspect_ratio?: number; //some props are optional...
+  aspect_ratio?: number;
   height?: number;
   iso_639_1?: string;
   vote_average?: number;
