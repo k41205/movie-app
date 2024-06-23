@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { getMoviesUpcoming } from "../api/tmdb-api";
 import { BaseMovieProps, DiscoverMovies } from "../types/interfaces";
@@ -10,6 +10,7 @@ import MovieFilterUI, {
   titleFilter,
   genreFilter,
 } from "../components/movieFilterUI";
+import { MoviesContext } from "../contexts/moviesContext";
 
 const titleFiltering = {
   name: "title",
@@ -31,6 +32,12 @@ const UpcomingMoviesPage: React.FC = () => {
     titleFiltering,
     genreFiltering,
   ]);
+
+  const { mustWatch, addToMustWatch } = useContext(MoviesContext);
+
+  useEffect(() => {
+    console.log("Must Watch List:", mustWatch);
+  }, [mustWatch]);
 
   if (isLoading) {
     return <Spinner />;
@@ -58,7 +65,17 @@ const UpcomingMoviesPage: React.FC = () => {
         title='Upcoming Movies'
         movies={displayedMovies}
         action={(movie: BaseMovieProps) => {
-          return <PlaylistAddIcon />;
+          const isMustWatch = mustWatch.includes(movie.id);
+          return (
+            <div>
+              <PlaylistAddIcon
+                onClick={() => {
+                  addToMustWatch(movie);
+                }}
+                style={{ color: isMustWatch ? "red" : "inherit" }}
+              />
+            </div>
+          );
         }}
       />
       <MovieFilterUI
