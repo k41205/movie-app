@@ -90,7 +90,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
             onChange={handleTextChange}
           />
           <FormControl sx={styles.formControl}>
-            <InputLabel id='genre-label'>Genre</InputLabel>
+            <InputLabel id='genre-label'></InputLabel>
             <Select
               labelId='genre-label'
               id='genre-select'

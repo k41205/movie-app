@@ -26,13 +26,13 @@ const styles = {
   },
   fab: {
     position: "fixed",
-    top: 50,
-    right: 2,
+    top: 80,
+    right: 20,
   },
 };
 
 const MovieDetails: React.FC<MovieDetailsProps> = (movie) => {
-  const [drawerOpen, setDrawerOpen] = useState(false); // New
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>
