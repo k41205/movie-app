@@ -2,14 +2,12 @@ import React from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI, {
-  titleFilter,
-  genreFilter,
-} from "../components/movieFilterUI";
-import { DiscoverMovies } from "../types/interfaces";
+import MovieFilterUI from "../components/movieFilterUI";
+import { BaseMovieProps, DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import { genreFilter, titleFilter } from "../util";
 
 const titleFiltering = {
   name: "title",
