@@ -5,12 +5,10 @@ import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI, {
-  titleFilter,
-  genreFilter,
-} from "../components/movieFilterUI";
+import MovieFilterUI from "../components/movieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
+import { genreFilter, titleFilter } from "../util";
 
 const titleFiltering = {
   name: "title",
@@ -30,7 +28,6 @@ const FavouriteMoviesPage: React.FC = () => {
     genreFiltering,
   ]);
 
-  // Create an array of queries and run them in parallel.
   const favouriteMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
@@ -40,7 +37,6 @@ const FavouriteMoviesPage: React.FC = () => {
     })
   );
 
-  // Check if any of the parallel queries is still loading.
   const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
 
   if (isLoading) {

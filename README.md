@@ -2,9 +2,9 @@
 
 ###### Full Stack Development 2, HDip in Computer Science
 
-**Name:** ....your name .....
+**Name:** Giacomo Cavarretta
 
-**Video Demo:** ..... URL of your YouTube video demonstration ....
+**Video Demo:** {YT LINK}
 
 This repository contains an implementation of the Movie Fans Web Application using the React library.
 
@@ -24,22 +24,23 @@ This repository contains an implementation of the Movie Fans Web Application usi
 
 ### API endpoints
 
-[ List the __additional__ TMDB endpoints used, giving the description and pathname for each one.]
+- Get collection of popular movies - http://localhost:3000/
+- Get collection of upcoming movies - http://localhost:3000/movies/upcoming
+- Get details of a movie - http://localhost:3000/movies/id
+- Get details of a review movie - http://localhost:3000/reviews/id
+- Get collection of movie genres - Used in the filter
 
-e.g.
-
-- Discover list of movies - discover/movie
-- Movie details - movie/:id
-- Movie genres = /genre/movie/list
+## Additional API endpoints:
 
 ### Routing
 
-[ List the __new routes__ supported by your app and state the associated page.]
+- /movies/favourites - Favourites page
+- /movies/upcoming - Upcoming page
+- /movies/:id - Movie details page
+- /reviews/:id - Review details page
+- /reviews/form - Write a review page
 
-- /blogs - displays all published blogs.
-- /blogs/:id - displays a particular blog.
-- /blogs/:id/comments - detail view of a particular blog and its comments.
-- etc.
+## Additional routes:
 
 [If relevant, state what aspects of your app are protected (i.e. require authentication) and what is public.]
 

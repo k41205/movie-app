@@ -6,11 +6,9 @@ import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI, {
-  titleFilter,
-  genreFilter,
-} from "../components/movieFilterUI";
+import MovieFilterUI from "../components/movieFilterUI";
 import { MoviesContext } from "../contexts/moviesContext";
+import { genreFilter, titleFilter } from "../util";
 
 const titleFiltering = {
   name: "title",

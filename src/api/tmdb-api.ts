@@ -1,3 +1,5 @@
+import { DiscoverMovies } from "../types/interfaces";
+
 export const getMovies = () => {
   return fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
@@ -14,7 +16,7 @@ export const getMovies = () => {
     });
 };
 
-export const getMoviesUpcoming = () => {
+export const getMoviesUpcoming = (): Promise<DiscoverMovies> => {
   return fetch(
     `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
   )
@@ -26,7 +28,12 @@ export const getMoviesUpcoming = () => {
       }
       return response.json();
     })
-    .then((json) => ({ results: json.results }));
+    .then((json) => ({
+      results: json.results,
+      page: json.page,
+      total_pages: json.total_pages,
+      total_results: json.total_results,
+    }));
 };
 
 export const getMovie = (id: string) => {
@@ -80,13 +87,11 @@ export const getMovieImages = (id: string | number) => {
 };
 
 export const getMovieReviews = (id: string | number) => {
-  //movie id can be string or number
   return fetch(
     `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`
   )
     .then((res) => res.json())
     .then((json) => {
-      // console.log(json.results);
       return json.results;
     });
 };
