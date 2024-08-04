@@ -95,3 +95,23 @@ export const getMovieReviews = (id: string | number) => {
       return json.results;
     });
 };
+
+export const getMostPopularMovies = (): Promise<DiscoverMovies> => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch most popular movies. Status: ${response.status}`
+        );
+      }
+      return response.json();
+    })
+    .then((json) => ({
+      results: json.results,
+      page: json.page,
+      total_pages: json.total_pages,
+      total_results: json.total_results,
+    }));
+};
