@@ -11,10 +11,10 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import img from "../../images/film-poster-placeholder.png";
-import { BaseMovieProps } from "../../types/interfaces";
+import { Movie } from "../../types/interfaces";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import { MoviesContext } from "../../contexts/moviesContext";
+import { MediaContext } from "../../contexts/mediaContext";
 
 const styles = {
   card: { maxWidth: 345 },
@@ -24,12 +24,12 @@ const styles = {
   },
 };
 interface MovieCardProps {
-  movie: BaseMovieProps;
-  action: (m: BaseMovieProps) => React.ReactNode;
+  movie: Movie;
+  action: (m: Movie) => React.ReactNode;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
-  const { favourites } = useContext(MoviesContext);
+  const { favourites } = useContext(MediaContext);
 
   const isFavourite = favourites.find((id) => id === movie.id) ? true : false;
 

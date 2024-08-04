@@ -9,7 +9,7 @@ import MovieReviewPage from "./pages/movieReviewPage";
 import SiteHeader from "./components/siteHeader";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import MoviesContextProvider from "./contexts/moviesContext";
+import MediaContextProvider from "./contexts/mediaContext";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import MostPopularMoviesPage from "./pages/mostPopularMoviesPage";
 
@@ -28,7 +28,7 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <SiteHeader />
-        <MoviesContextProvider>
+        <MediaContextProvider>
           <Routes>
             <Route path='/movies/favourites' element={<FavoriteMoviesPage />} />
             <Route path='/movies/:id' element={<MoviePage />} />
@@ -39,7 +39,7 @@ export const App = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='*' element={<Navigate to='/' />} />
           </Routes>
-        </MoviesContextProvider>
+        </MediaContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

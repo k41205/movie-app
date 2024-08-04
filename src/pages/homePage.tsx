@@ -3,7 +3,7 @@ import PageTemplate from "../components/templateMovieListPage";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI from "../components/movieFilterUI";
-import { BaseMovieProps, DiscoverMovies } from "../types/interfaces";
+import { Movie, DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
       <PageTemplate
         title='Discover Movies'
         movies={displayedMovies}
-        action={(movie: BaseMovieProps) => {
+        action={(movie: Movie) => {
           return <AddToFavouritesIcon {...movie} />;
         }}
       />

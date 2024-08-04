@@ -1,25 +1,29 @@
-
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import MovieList from "../components/movieList";
 import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
 
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import Grid from "@mui/material/Grid";
-import MoviesContextProvider from "../contexts/moviesContext";
-
+import MoviesContextProvider from "../contexts/mediaContext";
 
 const meta = {
   title: "Home Page/MovieList",
   component: MovieList,
   decorators: [
-      (Story) => <MemoryRouter initialEntries={["/"]}><Story /></MemoryRouter>,
-      (Story) => <MoviesContextProvider><Story /></MoviesContextProvider>,
-    ],
-    
+    (Story) => (
+      <MemoryRouter initialEntries={["/"]}>
+        <Story />
+      </MemoryRouter>
+    ),
+    (Story) => (
+      <MoviesContextProvider>
+        <Story />
+      </MoviesContextProvider>
+    ),
+  ],
 } satisfies Meta<typeof MovieList>;
 export default meta;
-
 
 export const Basic = () => {
   const movies = [
@@ -39,5 +43,3 @@ export const Basic = () => {
   );
 };
 Basic.storyName = "Default";
-
-

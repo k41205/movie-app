@@ -1,28 +1,61 @@
-export interface BaseMovieProps {
-  title: string;
-  budget: number;
-  homepage: string | undefined;
+export interface Movie {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
   id: number;
-  imdb_id: string;
   original_language: string;
+  original_title: string;
   overview: string;
-  release_date: string;
-  vote_average: number;
   popularity: number;
-  poster_path?: string;
-  tagline: string;
-  runtime: number;
-  revenue: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
   vote_count: number;
-  favourite?: boolean;
-  genre_ids?: number[];
+  mediaType: "movie";
 }
 
-export interface BaseMovieListProps {
-  movies: BaseMovieProps[];
-  action: (m: BaseMovieProps) => React.ReactNode;
+export interface TVSerie {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  origin_country: string[];
+  original_language: string;
+  original_name: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  first_air_date: string;
+  name: string;
+  vote_average: number;
+  vote_count: number;
+  mediaType: "tv";
 }
-export interface MovieDetailsProps extends BaseMovieProps {
+
+export type KnownFor = Movie | TVSerie;
+
+export interface Actor {
+  id: number;
+  name: string;
+  original_name: string;
+  media_type: "person";
+  adult: boolean;
+  popularity: number;
+  gender: number;
+  known_for_department: string;
+  profile_path: string;
+  known_for: KnownFor[];
+}
+
+export type Media = Movie | TVSerie | Actor;
+
+export interface BaseMovieListProps {
+  movies: Movie[];
+  action: (m: Movie) => React.ReactNode;
+}
+export interface MovieDetailsProps extends Movie {
   genres: {
     id: number;
     name: string;
@@ -71,7 +104,7 @@ export interface DiscoverMovies {
   page: number;
   total_pages: number;
   total_results: number;
-  results: BaseMovieProps[];
+  results: Movie[];
 }
 
 export interface Review {
