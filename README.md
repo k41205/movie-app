@@ -10,17 +10,19 @@ This repository contains an implementation of the Movie Fans Web Application usi
 
 ### Features
 
-[ A bullet-point list of the __new features__ you added to the Movies Fan app (and any **modifications to existing features**) .]
+- Homepage (discover movies)
+- Upcoming movies page
+- Search by genre and name
+- Add to favourite
+- Write a review
 
-- Feature 1
-- Feature 2
-- Feature 3
-- etc
-- etc
+#### New implementations [exam]
 
-### Setup requirements.
+- Popular movies page
 
-[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.]
+<!-- ### Setup requirements.
+
+[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.] -->
 
 ### API endpoints
 
@@ -30,7 +32,9 @@ This repository contains an implementation of the Movie Fans Web Application usi
 - Get details of a review movie - http://localhost:3000/reviews/id
 - Get collection of movie genres - Used in the filter
 
-## Additional API endpoints:
+#### New implementations [exam]
+
+- Get collection of popular movies - http://localhost:3000/movies/popular
 
 ### Routing
 
@@ -39,6 +43,10 @@ This repository contains an implementation of the Movie Fans Web Application usi
 - /movies/:id - Movie details page
 - /reviews/:id - Review details page
 - /reviews/form - Write a review page
+
+#### New implementations [exam]
+
+- /movies/upcoming - Popular page
 
 ## Additional routes:
 
