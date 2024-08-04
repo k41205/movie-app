@@ -1,12 +1,33 @@
 import React from "react";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import { Review } from "../../types/interfaces";
 
-const MovieReview: React.FC<Review> = (props) => {
+const styles = {
+  root: {
+    padding: "15px",
+    margin: "10px 0",
+  },
+  author: {
+    fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  content: {
+    marginTop: "10px",
+  },
+};
+
+const MediaReview: React.FC<Review> = (props) => {
   return (
-    <>
-      <p>Review By: {props.author} </p>
-      <p>{props.content} </p>
-    </>
+    <Paper sx={styles.root}>
+      <Typography variant='h6' sx={styles.author}>
+        Review By: {props.author}
+      </Typography>
+      <Typography variant='body1' sx={styles.content}>
+        {props.content}
+      </Typography>
+    </Paper>
   );
 };
-export default MovieReview;
+
+export default MediaReview;

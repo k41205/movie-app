@@ -150,3 +150,10 @@ export interface WriteReviewProps {
 }
 
 export type MediaDetailsProps = MovieDetailsProps | TVSerieDetailsProps;
+
+export interface HeaderProps {
+  title: string;
+}
+export interface AddToFavouritesIconProps {
+  item: Media;
+}

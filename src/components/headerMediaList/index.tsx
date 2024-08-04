@@ -1,6 +1,7 @@
 import React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { HeaderProps } from "../../types/interfaces";
 
 const styles = {
   root: {
@@ -11,10 +12,6 @@ const styles = {
     marginBottom: 1.5,
   },
 };
-
-interface HeaderProps {
-  title: string;
-}
 
 const Header: React.FC<HeaderProps> = (headerProps) => {
   const title = headerProps.title;

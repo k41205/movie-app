@@ -2,11 +2,7 @@ import React, { useContext } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import { MediaContext } from "../../contexts/mediaContext";
-import { Media } from "../../types/interfaces";
-
-interface AddToFavouritesIconProps {
-  item: Media;
-}
+import { AddToFavouritesIconProps } from "../../types/interfaces";
 
 const AddToFavouritesIcon: React.FC<AddToFavouritesIconProps> = ({ item }) => {
   const { addToFavourites } = useContext(MediaContext);
