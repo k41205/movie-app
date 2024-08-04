@@ -1,7 +1,7 @@
 import React from "react";
 import PageTemplate from "../components/templateMediaListPage";
-import { getMostPopularMovies } from "../api/tmdb-api";
-import { Media, Movie, DiscoverResponse } from "../types/interfaces";
+import { getTVSeries } from "../api/tmdb-api";
+import { Media, DiscoverResponse, TVSerie } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -20,11 +20,11 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-const MostPopularMoviesPage: React.FC = () => {
+const TVSeriesPage: React.FC = () => {
   const { data, error, isLoading, isError } = useQuery<
-    DiscoverResponse<Movie>,
+    DiscoverResponse<TVSerie>,
     Error
-  >("mostPopularMovies", getMostPopularMovies);
+  >("tvSeries", getTVSeries);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([
     titleFiltering,
     genreFiltering,
@@ -47,17 +47,19 @@ const MostPopularMoviesPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  const movies = data ? data.results : [];
-  const displayedMovies = filterFunction(movies);
+  const tvSeries = data ? data.results : [];
+  const displayedTVSeries = filterFunction(tvSeries);
+
+  const action = (tvSerie: Media) => {
+    return <AddToFavouritesIcon item={tvSerie as TVSerie} />;
+  };
 
   return (
     <>
       <PageTemplate
-        title='Most Popular Movies'
-        media={displayedMovies}
-        action={(media: Media) => {
-          return <AddToFavouritesIcon item={media as Movie} />;
-        }}
+        title='Popular TV Series'
+        media={displayedTVSeries}
+        action={action}
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
@@ -68,4 +70,4 @@ const MostPopularMoviesPage: React.FC = () => {
   );
 };
 
-export default MostPopularMoviesPage;
+export default TVSeriesPage;

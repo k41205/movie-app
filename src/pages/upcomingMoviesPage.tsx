@@ -1,12 +1,12 @@
 import React from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getMoviesUpcoming } from "../api/tmdb-api";
-import { Movie, DiscoverMovies, Media } from "../types/interfaces";
+import { Movie, Media, DiscoverResponse } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI from "../components/movieFilterUI";
+import MediaFilterUI from "../components/mediaFilterUI";
 import { genreFilter, titleFilter } from "../util";
 
 const titleFiltering = {
@@ -21,10 +21,10 @@ const genreFiltering = {
 };
 
 const UpcomingMoviesPage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
-    "upcomingMovies",
-    getMoviesUpcoming
-  );
+  const { data, error, isLoading, isError } = useQuery<
+    DiscoverResponse<Movie>,
+    Error
+  >("upcomingMovies", getMoviesUpcoming);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([
     titleFiltering,
     genreFiltering,
@@ -47,9 +47,7 @@ const UpcomingMoviesPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  const movies = data
-    ? data.results.map((movie) => ({ ...movie, mediaType: "movie" }))
-    : [];
+  const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
 
   const action = (movie: Media) => {
@@ -63,7 +61,7 @@ const UpcomingMoviesPage: React.FC = () => {
         media={displayedMovies}
         action={action}
       />
-      <MovieFilterUI
+      <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}

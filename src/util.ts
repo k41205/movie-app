@@ -1,5 +1,5 @@
 import truncate from "lodash/truncate";
-import { Movie } from "./types/interfaces";
+import { Media, Movie, TVSerie } from "./types/interfaces";
 
 export const excerpt = (string: string) => {
   return truncate(string, {
@@ -8,12 +8,27 @@ export const excerpt = (string: string) => {
   });
 };
 
-export const titleFilter = (movie: Movie, value: string): boolean => {
-  return movie.title.toLowerCase().search(value.toLowerCase()) !== -1;
+const isMovie = (media: Media): media is Movie => {
+  return (media as Movie).title !== undefined;
 };
 
-export const genreFilter = (movie: Movie, value: string) => {
+const isTVSerie = (media: Media): media is TVSerie => {
+  return (media as TVSerie).name !== undefined;
+};
+
+export const titleFilter = (media: Media, value: string): boolean => {
+  const title = isMovie(media)
+    ? media.title
+    : isTVSerie(media)
+      ? media.name
+      : "";
+  return title.toLowerCase().search(value.toLowerCase()) !== -1;
+};
+
+export const genreFilter = (media: Media, value: string): boolean => {
+  if (!isMovie(media) && !isTVSerie(media)) return true;
+
   const genreId = Number(value);
-  const genreIds = movie.genre_ids;
+  const genreIds = media.genre_ids;
   return genreId > 0 && genreIds ? genreIds.includes(genreId) : true;
 };

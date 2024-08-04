@@ -2,8 +2,8 @@ import React from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI from "../components/movieFilterUI";
-import { Movie, Media, DiscoverMovies } from "../types/interfaces";
+import MediaFilterUI from "../components/mediaFilterUI";
+import { Movie, Media, DiscoverResponse } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -21,10 +21,10 @@ const genreFiltering = {
 };
 
 const HomePage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
-    "discover",
-    getMovies
-  );
+  const { data, error, isLoading, isError } = useQuery<
+    DiscoverResponse<Movie>,
+    Error
+  >("discover", getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([
     titleFiltering,
     genreFiltering,
@@ -47,9 +47,7 @@ const HomePage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  const movies = data
-    ? data.results.map((movie) => ({ ...movie, mediaType: "movie" }))
-    : [];
+  const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
 
   const action = (movie: Media) => {
@@ -63,7 +61,7 @@ const HomePage: React.FC = () => {
         media={displayedMovies}
         action={action}
       />
-      <MovieFilterUI
+      <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}

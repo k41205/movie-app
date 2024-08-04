@@ -107,7 +107,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
           </Link>
         )}
         {item.mediaType === "tv" && (
-          <Link to={`/tv/${item.id}`}>
+          <Link to={`/tvseries/${item.id}`}>
             <Button variant='outlined' size='medium' color='primary'>
               More Info ...
             </Button>

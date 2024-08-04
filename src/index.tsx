@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
 import HomePage from "./pages/homePage";
-import MoviePage from "./pages/mediaDetailsPage";
+import MediaDetailsPage from "./pages/mediaDetailsPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import UpcomingMoviesPage from "./pages/upcomingMoviesPage";
 import MediaReviewPage from "./pages/mediaReviewPage";
@@ -12,6 +12,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import MediaContextProvider from "./contexts/mediaContext";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import MostPopularMoviesPage from "./pages/mostPopularMoviesPage";
+import TVSeriesPage from "./pages/tvSeriesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,9 +32,11 @@ export const App = () => {
         <MediaContextProvider>
           <Routes>
             <Route path='/movies/favourites' element={<FavoriteMoviesPage />} />
-            <Route path='/movies/:id' element={<MoviePage />} />
+            <Route path='/movies/:id' element={<MediaDetailsPage />} />
             <Route path='/movies/upcoming' element={<UpcomingMoviesPage />} />
             <Route path='/movies/popular' element={<MostPopularMoviesPage />} />
+            <Route path='/tvseries' element={<TVSeriesPage />} />
+            <Route path='/tvseries/:id' element={<MediaDetailsPage />} />
             <Route path='/reviews/:id' element={<MediaReviewPage />} />
             <Route path='/reviews/form' element={<AddMovieReviewPage />} />
             <Route path='/' element={<HomePage />} />

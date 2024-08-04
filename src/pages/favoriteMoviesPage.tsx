@@ -5,7 +5,7 @@ import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI from "../components/movieFilterUI";
+import MediaFilterUI from "../components/mediaFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { genreFilter, titleFilter } from "../util";
@@ -68,11 +68,11 @@ const FavouriteMoviesPage: React.FC = () => {
   return (
     <>
       <PageTemplate
-        title='Favourite Media'
+        title='Favorite Movies'
         media={displayedMedia}
         action={action}
       />
-      <MovieFilterUI
+      <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}

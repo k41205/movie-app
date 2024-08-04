@@ -1,39 +1,49 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import MediaDetails from "../components/mediaDetails";
 import PageTemplate from "../components/templateMediaPage";
-import { getMovie } from "../api/tmdb-api";
+import { getMediaDetails, getMediaImages } from "../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import { MovieDetailsProps } from "../types/interfaces";
+import { MediaDetailsProps } from "../types/interfaces";
 
 const MediaDetailsPage: React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+
+  const mediaType = location.pathname.includes("/movies/") ? "movie" : "tv";
+
+  const fetchFunction = () => getMediaDetails(id || "", mediaType);
+
   const {
     data: media,
     error,
     isLoading,
     isError,
-  } = useQuery<MovieDetailsProps, Error>(["media", id], () =>
-    getMovie(id || "")
-  );
+  } = useQuery<MediaDetailsProps, Error>(["media", id], fetchFunction);
 
-  if (isLoading) {
+  const {
+    data: images,
+    error: imagesError,
+    isLoading: isImagesLoading,
+  } = useQuery(["mediaImages", id], () => getMediaImages(id || "", mediaType), {
+    enabled: !!media,
+  });
+
+  if (isLoading || isImagesLoading) {
     return <Spinner />;
   }
 
-  if (isError) {
+  if (isError || imagesError) {
     return <h1>{(error as Error).message}</h1>;
   }
 
   return (
     <>
       {media ? (
-        <>
-          <PageTemplate media={media}>
-            <MediaDetails {...media} />
-          </PageTemplate>
-        </>
+        <PageTemplate media={media}>
+          <MediaDetails {...media} images={images} />
+        </PageTemplate>
       ) : (
         <p>Waiting for media details</p>
       )}

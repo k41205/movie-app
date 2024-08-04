@@ -15,13 +15,13 @@ const styles = {
   },
 };
 
-interface MovieFilterUIProps {
+interface MediaFilterUIProps {
   onFilterValuesChange: (f: string, s: string) => void;
   titleFilter: string;
   genreFilter: string;
 }
 
-const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
+const MediaFilterUI: React.FC<MediaFilterUIProps> = ({
   onFilterValuesChange,
   titleFilter,
   genreFilter,
@@ -53,4 +53,4 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({
   );
 };
 
-export default MovieFilterUI;
+export default MediaFilterUI;

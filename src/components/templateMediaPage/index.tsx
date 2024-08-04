@@ -1,11 +1,12 @@
 import React from "react";
 import MediaHeader from "../headerMedia";
 import Grid from "@mui/material/Grid";
-import { getMovieImages } from "../../api/tmdb-api";
+import { getMediaImages } from "../../api/tmdb-api";
 import {
   MovieImage,
   MediaDetailsProps,
-  MovieDetailsProps,
+  TemplateMediaPageProps,
+  Movie,
 } from "../../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
@@ -26,22 +27,19 @@ const styles = {
   },
 };
 
-interface TemplateMediaPageProps {
-  media: MediaDetailsProps;
-  children: React.ReactElement;
-}
-
-const isMovie = (media: MediaDetailsProps): media is MovieDetailsProps => {
-  return (media as MovieDetailsProps).runtime !== undefined;
+const isMovie = (media: MediaDetailsProps): media is Movie => {
+  return (media as Movie).runtime !== undefined;
 };
 
 const TemplateMediaPage: React.FC<TemplateMediaPageProps> = ({
   media,
   children,
 }) => {
+  const mediaType = isMovie(media) ? "movie" : "tv";
+
   const { error, isLoading, isError } = useQuery<MovieImage[], Error>(
     ["images", media.id],
-    () => getMovieImages(media.id)
+    () => getMediaImages(media.id, mediaType)
   );
 
   if (isLoading) {

@@ -9,19 +9,13 @@ import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
 import { getMovieReviews, getTVSeriesReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
-import {
-  MovieDetailsProps,
-  TVSerieDetailsProps,
-  Review,
-} from "../../types/interfaces";
+import { Review, MediaDetailsProps } from "../../types/interfaces";
 
 const styles = {
   table: {
     minWidth: 550,
   },
 };
-
-type MediaDetailsProps = MovieDetailsProps | TVSerieDetailsProps;
 
 const MediaReviews: React.FC<{ media: MediaDetailsProps }> = ({ media }) => {
   const [reviews, setReviews] = useState<Review[]>([]);

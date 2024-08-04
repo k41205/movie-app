@@ -134,11 +134,11 @@ export interface GenreData {
   }[];
 }
 
-export interface DiscoverMovies {
+export interface DiscoverResponse<T> {
   page: number;
   total_pages: number;
   total_results: number;
-  results: Movie[];
+  results: T[];
 }
 
 export interface RemoveFromFavouritesProps {
@@ -149,11 +149,21 @@ export interface WriteReviewProps {
   item: Media;
 }
 
-export type MediaDetailsProps = MovieDetailsProps | TVSerieDetailsProps;
+export type MediaDetailsProps = Movie | TVSerie;
 
 export interface HeaderProps {
   title: string;
 }
 export interface AddToFavouritesIconProps {
   item: Media;
+}
+
+export interface TemplateMediaPageProps {
+  media: MediaDetailsProps;
+  children: React.ReactElement;
+}
+
+export interface Genre {
+  id: number;
+  name: string;
 }

@@ -5,7 +5,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarRate from "@mui/icons-material/StarRate";
 import Typography from "@mui/material/Typography";
-import { MediaDetailsProps, MovieDetailsProps } from "../../types/interfaces";
+import { MediaDetailsProps, Genre, MovieImage } from "../../types/interfaces";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
@@ -31,11 +31,9 @@ const styles = {
   },
 };
 
-const isMovie = (media: MediaDetailsProps): media is MovieDetailsProps => {
-  return (media as MovieDetailsProps).runtime !== undefined;
-};
-
-const MediaDetails: React.FC<MediaDetailsProps> = (media) => {
+const MediaDetails: React.FC<MediaDetailsProps & { images: MovieImage[] }> = (
+  media
+) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -52,19 +50,20 @@ const MediaDetails: React.FC<MediaDetailsProps> = (media) => {
         <li>
           <Chip label='Genres' sx={styles.chipLabel} color='primary' />
         </li>
-        {media.genres.map((g) => (
-          <li key={g.name}>
-            <Chip label={g.name} />
-          </li>
-        ))}
+        {"genres" in media &&
+          media.genres.map((g: Genre) => (
+            <li key={g.id}>
+              <Chip label={g.name} />
+            </li>
+          ))}
       </Paper>
       <Paper component='ul' sx={styles.chipSet}>
-        {isMovie(media) ? (
+        {"runtime" in media && (
           <>
             <Chip icon={<AccessTimeIcon />} label={`${media.runtime} min.`} />
             <Chip
               icon={<MonetizationIcon />}
-              label={`${media.revenue.toLocaleString()}`}
+              label={`${media.revenue?.toLocaleString()}`}
             />
             <Chip
               icon={<StarRate />}
@@ -72,7 +71,8 @@ const MediaDetails: React.FC<MediaDetailsProps> = (media) => {
             />
             <Chip label={`Released: ${media.release_date}`} />
           </>
-        ) : (
+        )}
+        {"number_of_episodes" in media && (
           <>
             <Chip
               icon={<AccessTimeIcon />}
