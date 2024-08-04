@@ -1,9 +1,9 @@
 import React from "react";
-import PageTemplate from "../components/templateMovieListPage";
+import PageTemplate from "../components/templateMediaListPage";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI from "../components/movieFilterUI";
-import { Movie, DiscoverMovies } from "../types/interfaces";
+import { Movie, Media, DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -50,14 +50,16 @@ const HomePage: React.FC = () => {
   const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
 
+  const action = (movie: Media) => {
+    return <AddToFavouritesIcon item={movie as Movie} />;
+  };
+
   return (
     <>
       <PageTemplate
         title='Discover Movies'
-        movies={displayedMovies}
-        action={(movie: Movie) => {
-          return <AddToFavouritesIcon {...movie} />;
-        }}
+        media={displayedMovies}
+        action={action}
       />
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}
@@ -67,4 +69,5 @@ const HomePage: React.FC = () => {
     </>
   );
 };
+
 export default HomePage;

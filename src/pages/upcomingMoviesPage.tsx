@@ -1,7 +1,7 @@
 import React from "react";
-import PageTemplate from "../components/templateMovieListPage";
+import PageTemplate from "../components/templateMediaListPage";
 import { getMoviesUpcoming } from "../api/tmdb-api";
-import { BaseMovieProps, DiscoverMovies } from "../types/interfaces";
+import { Movie, DiscoverMovies, Media } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -50,14 +50,16 @@ const UpcomingMoviesPage: React.FC = () => {
   const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
 
+  const action = (movie: Media) => {
+    return <AddToFavouritesIcon item={movie as Movie} />;
+  };
+
   return (
     <>
       <PageTemplate
         title='Upcoming Movies'
-        movies={displayedMovies}
-        action={(movie: BaseMovieProps) => {
-          return <AddToFavouritesIcon {...movie} />;
-        }}
+        media={displayedMovies}
+        action={action}
       />
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}

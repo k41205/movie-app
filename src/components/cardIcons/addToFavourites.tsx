@@ -1,18 +1,22 @@
-import React, { MouseEvent, useContext } from "react";
-import { MediaContext } from "../../contexts/mediaContext";
-import IconButton from "@mui/material/IconButton";
+import React, { useContext } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Movie } from "../../types/interfaces";
+import IconButton from "@mui/material/IconButton";
+import { MediaContext } from "../../contexts/mediaContext";
+import { Media } from "../../types/interfaces";
 
-const AddToFavouritesIcon: React.FC<Movie> = (movie) => {
-  const context = useContext(MediaContext);
+interface AddToFavouritesIconProps {
+  item: Media;
+}
 
-  const onUserSelect = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    context.addToFavourites(movie);
+const AddToFavouritesIcon: React.FC<AddToFavouritesIconProps> = ({ item }) => {
+  const { addToFavourites } = useContext(MediaContext);
+
+  const handleAddToFavourites = () => {
+    addToFavourites(item);
   };
+
   return (
-    <IconButton aria-label='add to favorites' onClick={onUserSelect}>
+    <IconButton aria-label='add to favorites' onClick={handleAddToFavourites}>
       <FavoriteIcon color='primary' fontSize='large' />
     </IconButton>
   );

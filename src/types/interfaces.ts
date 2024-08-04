@@ -46,10 +46,27 @@ export interface Actor {
   gender: number;
   known_for_department: string;
   profile_path: string;
-  known_for: KnownFor[];
+  known_for: (Movie | TVSerie)[];
+  mediaType: "actor";
 }
 
 export type Media = Movie | TVSerie | Actor;
+
+export interface MediaListPageTemplateProps {
+  media: Media[];
+  title: string;
+  action: (item: Media) => JSX.Element;
+}
+
+export interface MediaListProps {
+  media: Media[];
+  action: (item: Media) => React.ReactNode;
+}
+
+export interface MediaCardProps {
+  item: Media;
+  action: React.ReactNode;
+}
 
 export interface BaseMovieListProps {
   movies: Movie[];
@@ -83,10 +100,6 @@ export interface MoviePageProps {
 
 export type FilterOption = "title" | "genre";
 
-export interface MovieListPageTemplateProps extends BaseMovieListProps {
-  title: string;
-}
-
 export interface Review {
   id: string;
   content: string;
@@ -113,4 +126,12 @@ export interface Review {
   agree: boolean;
   rating: number;
   movieId: number;
+}
+
+export interface RemoveFromFavouritesProps {
+  item: Media;
+}
+
+export interface WriteReviewProps {
+  item: Media;
 }

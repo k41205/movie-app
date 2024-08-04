@@ -2,21 +2,26 @@ import React, { MouseEvent, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { MediaContext } from "../../contexts/mediaContext";
-import { Movie } from "../../types/interfaces";
+import { RemoveFromFavouritesProps } from "../../types/interfaces";
 
-const RemoveFromFavouritesIcon: React.FC<Movie> = (movie) => {
-  const context = useContext(MediaContext);
+const RemoveFromFavourites: React.FC<RemoveFromFavouritesProps> = ({
+  item,
+}) => {
+  const { removeFromFavourites } = useContext(MediaContext);
 
-  const onUserRequest = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleRemoveFromFavourites = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    context.removeFromFavourites(movie);
+    removeFromFavourites(item);
   };
 
   return (
-    <IconButton aria-label='remove from favorites' onClick={onUserRequest}>
+    <IconButton
+      aria-label='remove from favorites'
+      onClick={handleRemoveFromFavourites}
+    >
       <DeleteIcon color='primary' fontSize='large' />
     </IconButton>
   );
 };
 
-export default RemoveFromFavouritesIcon;
+export default RemoveFromFavourites;

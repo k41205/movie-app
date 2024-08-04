@@ -7,16 +7,21 @@ import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import { MovieDetailsProps } from "../types/interfaces";
 
+const useQueryParams = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 const WriteReviewPage: React.FC = () => {
-  const location = useLocation();
-  const { movieId } = location.state;
+  const query = useQueryParams();
+  const mediaId = query.get("mediaId");
+
   const {
     data: movie,
     error,
     isLoading,
     isError,
-  } = useQuery<MovieDetailsProps, Error>(["movie", movieId], () =>
-    getMovie(movieId)
+  } = useQuery<MovieDetailsProps, Error>(["movie", mediaId], () =>
+    getMovie(mediaId!)
   );
 
   if (isLoading) {
@@ -26,6 +31,7 @@ const WriteReviewPage: React.FC = () => {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
+
   return (
     <>
       {movie ? (

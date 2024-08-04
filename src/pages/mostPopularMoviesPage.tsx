@@ -1,7 +1,7 @@
 import React from "react";
-import PageTemplate from "../components/templateMovieListPage";
+import PageTemplate from "../components/templateMediaListPage";
 import { getMostPopularMovies } from "../api/tmdb-api";
-import { BaseMovieProps, DiscoverMovies } from "../types/interfaces";
+import { Media, DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -54,9 +54,9 @@ const MostPopularMoviesPage: React.FC = () => {
     <>
       <PageTemplate
         title='Most Popular Movies'
-        movies={displayedMovies}
-        action={(movie: BaseMovieProps) => {
-          return <AddToFavouritesIcon {...movie} />;
+        media={displayedMovies}
+        action={(media: Media) => {
+          return <AddToFavouritesIcon item={media} />;
         }}
       />
       <MovieFilterUI
