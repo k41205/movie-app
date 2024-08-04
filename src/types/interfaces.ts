@@ -14,6 +14,8 @@ export interface Movie {
   vote_average: number;
   vote_count: number;
   mediaType: "movie";
+  runtime?: number;
+  revenue?: number;
 }
 
 export interface TVSerie {
@@ -32,6 +34,8 @@ export interface TVSerie {
   vote_average: number;
   vote_count: number;
   mediaType: "tv";
+  number_of_episodes?: number;
+  number_of_seasons?: number;
 }
 
 export type KnownFor = Movie | TVSerie;
@@ -72,7 +76,21 @@ export interface BaseMovieListProps {
   movies: Movie[];
   action: (m: Movie) => React.ReactNode;
 }
+
 export interface MovieDetailsProps extends Movie {
+  genres: {
+    id: number;
+    name: string;
+  }[];
+  production_countries: {
+    iso_3166_1: string;
+    name: string;
+  }[];
+  runtime: number;
+  revenue: number;
+}
+
+export interface TVSerieDetailsProps extends TVSerie {
   genres: {
     id: number;
     name: string;
@@ -104,6 +122,9 @@ export interface Review {
   id: string;
   content: string;
   author: string;
+  agree: boolean;
+  rating: number;
+  movieId: number;
 }
 
 export interface GenreData {
@@ -120,14 +141,6 @@ export interface DiscoverMovies {
   results: Movie[];
 }
 
-export interface Review {
-  author: string;
-  content: string;
-  agree: boolean;
-  rating: number;
-  movieId: number;
-}
-
 export interface RemoveFromFavouritesProps {
   item: Media;
 }
@@ -135,3 +148,5 @@ export interface RemoveFromFavouritesProps {
 export interface WriteReviewProps {
   item: Media;
 }
+
+export type MediaDetailsProps = MovieDetailsProps | TVSerieDetailsProps;

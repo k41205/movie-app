@@ -1,8 +1,7 @@
 import React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import HomeIcon from "@mui/icons-material/Home";
-import { MovieDetailsProps } from "../../types/interfaces";
+import { MediaDetailsProps, MovieDetailsProps } from "../../types/interfaces";
 
 const styles = {
   root: {
@@ -14,20 +13,18 @@ const styles = {
   },
 };
 
-const MovieHeader: React.FC<MovieDetailsProps> = (movie) => {
+const isMovie = (media: MediaDetailsProps): media is MovieDetailsProps => {
+  return (media as MovieDetailsProps).runtime !== undefined;
+};
+
+const MediaHeader: React.FC<MediaDetailsProps> = (media) => {
   return (
     <Paper component='div' sx={styles.root}>
       <Typography variant='h4' component='h3'>
-        {movie.title}
-        {"   "}
-        <a href={movie.homepage}>
-          <HomeIcon color='primary' fontSize='large' />
-        </a>
-        <br />
-        <span>{`${movie.tagline}`} </span>
+        {isMovie(media) ? media.title : media.name}
       </Typography>
     </Paper>
   );
 };
 
-export default MovieHeader;
+export default MediaHeader;

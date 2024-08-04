@@ -1,8 +1,12 @@
 import React from "react";
-import MovieHeader from "../headerMovie";
+import MediaHeader from "../headerMedia";
 import Grid from "@mui/material/Grid";
 import { getMovieImages } from "../../api/tmdb-api";
-import { MovieImage, MovieDetailsProps } from "../../types/interfaces";
+import {
+  MovieImage,
+  MediaDetailsProps,
+  MovieDetailsProps,
+} from "../../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
 
@@ -22,18 +26,22 @@ const styles = {
   },
 };
 
-interface TemplateMoviePageProps {
-  movie: MovieDetailsProps;
+interface TemplateMediaPageProps {
+  media: MediaDetailsProps;
   children: React.ReactElement;
 }
 
-const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
-  movie,
+const isMovie = (media: MediaDetailsProps): media is MovieDetailsProps => {
+  return (media as MovieDetailsProps).runtime !== undefined;
+};
+
+const TemplateMediaPage: React.FC<TemplateMediaPageProps> = ({
+  media,
   children,
 }) => {
   const { error, isLoading, isError } = useQuery<MovieImage[], Error>(
-    ["images", movie.id],
-    () => getMovieImages(movie.id)
+    ["images", media.id],
+    () => getMovieImages(media.id)
   );
 
   if (isLoading) {
@@ -46,15 +54,19 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
 
   return (
     <>
-      <MovieHeader {...movie} />
+      <MediaHeader {...media} />
 
       <Grid container spacing={5} style={{ padding: "15px" }}>
         <Grid item xs={3}>
-          {movie.poster_path && (
+          {media.poster_path && (
             <div style={styles.gridListTile}>
               <img
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                alt={`${movie.title} Cover`}
+                src={`https://image.tmdb.org/t/p/w500/${media.poster_path}`}
+                alt={
+                  isMovie(media)
+                    ? `${media.title} Cover`
+                    : `${media.name} Cover`
+                }
                 style={styles.poster}
               />
             </div>
@@ -69,4 +81,4 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({
   );
 };
 
-export default TemplateMoviePage;
+export default TemplateMediaPage;

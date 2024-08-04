@@ -1,7 +1,7 @@
 import React from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getMostPopularMovies } from "../api/tmdb-api";
-import { Media, DiscoverMovies } from "../types/interfaces";
+import { Media, DiscoverMovies, Movie } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -47,7 +47,9 @@ const MostPopularMoviesPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  const movies = data ? data.results : [];
+  const movies = data
+    ? data.results.map((movie) => ({ ...movie, mediaType: "movie" }))
+    : [];
   const displayedMovies = filterFunction(movies);
 
   return (
@@ -56,7 +58,7 @@ const MostPopularMoviesPage: React.FC = () => {
         title='Most Popular Movies'
         media={displayedMovies}
         action={(media: Media) => {
-          return <AddToFavouritesIcon item={media} />;
+          return <AddToFavouritesIcon item={media as Movie} />;
         }}
       />
       <MovieFilterUI

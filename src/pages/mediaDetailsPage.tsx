@@ -1,20 +1,20 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import MovieDetails from "../components/movieDetails";
-import PageTemplate from "../components/templateMoviePage";
+import MediaDetails from "../components/mediaDetails";
+import PageTemplate from "../components/templateMediaPage";
 import { getMovie } from "../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import { MovieDetailsProps } from "../types/interfaces";
 
-const MovieDetailsPage: React.FC = () => {
+const MediaDetailsPage: React.FC = () => {
   const { id } = useParams();
   const {
-    data: movie,
+    data: media,
     error,
     isLoading,
     isError,
-  } = useQuery<MovieDetailsProps, Error>(["movie", id], () =>
+  } = useQuery<MovieDetailsProps, Error>(["media", id], () =>
     getMovie(id || "")
   );
 
@@ -28,17 +28,17 @@ const MovieDetailsPage: React.FC = () => {
 
   return (
     <>
-      {movie ? (
+      {media ? (
         <>
-          <PageTemplate movie={movie}>
-            <MovieDetails {...movie} />
+          <PageTemplate media={media}>
+            <MediaDetails {...media} />
           </PageTemplate>
         </>
       ) : (
-        <p>Waiting for movie details</p>
+        <p>Waiting for media details</p>
       )}
     </>
   );
 };
 
-export default MovieDetailsPage;
+export default MediaDetailsPage;

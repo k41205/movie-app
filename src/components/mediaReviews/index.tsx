@@ -7,25 +7,39 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import { getMovieReviews } from "../../api/tmdb-api";
+import { getMovieReviews, getTVSeriesReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
+import {
+  MovieDetailsProps,
+  TVSerieDetailsProps,
+  Review,
+} from "../../types/interfaces";
 
-import { MovieDetailsProps, Review } from "../../types/interfaces";
 const styles = {
   table: {
     minWidth: 550,
   },
 };
 
-const MovieReviews: React.FC<MovieDetailsProps> = (movie) => {
-  const [reviews, setReviews] = useState([]);
+type MediaDetailsProps = MovieDetailsProps | TVSerieDetailsProps;
+
+const MediaReviews: React.FC<{ media: MediaDetailsProps }> = ({ media }) => {
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
-    getMovieReviews(movie.id).then((reviews) => {
-      setReviews(reviews);
-    });
+    const fetchReviews = async () => {
+      if ("runtime" in media) {
+        const movieReviews = await getMovieReviews(media.id);
+        setReviews(movieReviews);
+      } else {
+        const tvSeriesReviews = await getTVSeriesReviews(media.id);
+        setReviews(tvSeriesReviews);
+      }
+    };
+
+    fetchReviews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [media.id]);
 
   return (
     <TableContainer component={Paper}>
@@ -49,7 +63,7 @@ const MovieReviews: React.FC<MovieDetailsProps> = (movie) => {
                   to={`/reviews/${r.id}`}
                   state={{
                     review: r,
-                    movie: movie,
+                    media,
                   }}
                 >
                   Full Review
@@ -63,4 +77,4 @@ const MovieReviews: React.FC<MovieDetailsProps> = (movie) => {
   );
 };
 
-export default MovieReviews;
+export default MediaReviews;

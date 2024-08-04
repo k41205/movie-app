@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import PageTemplate from "../components/templateMoviePage";
-import MovieReview from "../components/movieReview";
+import PageTemplate from "../components/templateMediaPage";
+import MovieReview from "../components/mediaReview";
 
 const MovieReviewPage: React.FC = () => {
   const {
