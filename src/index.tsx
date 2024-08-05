@@ -13,6 +13,7 @@ import MediaContextProvider from "./contexts/mediaContext";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import MostPopularMoviesPage from "./pages/mostPopularMoviesPage";
 import TVSeriesPage from "./pages/tvSeriesPage";
+import FavouriteTVSeriesPage from "./pages/favouriteTVSeriesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,6 +33,10 @@ export const App = () => {
         <MediaContextProvider>
           <Routes>
             <Route path='/movies/favourites' element={<FavoriteMoviesPage />} />
+            <Route
+              path='/tvseries/favourites'
+              element={<FavouriteTVSeriesPage />}
+            />
             <Route path='/movies/:id' element={<MediaDetailsPage />} />
             <Route path='/movies/upcoming' element={<UpcomingMoviesPage />} />
             <Route path='/movies/popular' element={<MostPopularMoviesPage />} />

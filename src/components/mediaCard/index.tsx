@@ -31,9 +31,12 @@ const styles = {
 };
 
 const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
-  const { favourites } = useContext(MediaContext);
+  const { favouriteMovies, favouriteTVSeries } = useContext(MediaContext);
 
-  const isFavourite = favourites.includes(item.id);
+  const isFavourite =
+    item.mediaType === "movie"
+      ? favouriteMovies.includes(item.id)
+      : favouriteTVSeries.includes(item.id);
 
   const displayTitle = (item: Media) => {
     if ((item as Movie).title) return (item as Movie).title;

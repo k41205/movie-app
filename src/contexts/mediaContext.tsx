@@ -2,7 +2,8 @@ import React, { useState, useCallback } from "react";
 import { Movie, TVSerie, Actor, Review } from "../types/interfaces";
 
 interface MediaContextInterface {
-  favourites: number[];
+  favouriteMovies: number[];
+  favouriteTVSeries: number[];
   mustWatch: number[];
   addToFavourites: (item: Movie | TVSerie | Actor) => void;
   removeFromFavourites: (item: Movie | TVSerie | Actor) => void;
@@ -11,7 +12,8 @@ interface MediaContextInterface {
 }
 
 const initialContextState: MediaContextInterface = {
-  favourites: [],
+  favouriteMovies: [],
+  favouriteTVSeries: [],
   mustWatch: [],
   addToFavourites: () => {},
   removeFromFavourites: () => {},
@@ -28,22 +30,38 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const [myReviews, setMyReviews] = useState<Record<number, Review>>({});
-  const [favourites, setFavourites] = useState<number[]>([]);
+  const [favouriteMovies, setFavouriteMovies] = useState<number[]>([]);
+  const [favouriteTVSeries, setFavouriteTVSeries] = useState<number[]>([]);
   const [mustWatch, setMustWatch] = useState<number[]>([]);
 
   const addToFavourites = useCallback((item: Movie | TVSerie | Actor) => {
-    setFavourites((prevFavourites) => {
-      if (!prevFavourites.includes(item.id)) {
-        return [...prevFavourites, item.id];
-      }
-      return prevFavourites;
-    });
+    if (item.mediaType === "movie") {
+      setFavouriteMovies((prevFavourites) => {
+        if (!prevFavourites.includes(item.id)) {
+          return [...prevFavourites, item.id];
+        }
+        return prevFavourites;
+      });
+    } else if (item.mediaType === "tv") {
+      setFavouriteTVSeries((prevFavourites) => {
+        if (!prevFavourites.includes(item.id)) {
+          return [...prevFavourites, item.id];
+        }
+        return prevFavourites;
+      });
+    }
   }, []);
 
   const removeFromFavourites = useCallback((item: Movie | TVSerie | Actor) => {
-    setFavourites((prevFavourites) =>
-      prevFavourites.filter((mId) => mId !== item.id)
-    );
+    if (item.mediaType === "movie") {
+      setFavouriteMovies((prevFavourites) =>
+        prevFavourites.filter((mId) => mId !== item.id)
+      );
+    } else if (item.mediaType === "tv") {
+      setFavouriteTVSeries((prevFavourites) =>
+        prevFavourites.filter((mId) => mId !== item.id)
+      );
+    }
   }, []);
 
   const addToMustWatch = useCallback((item: Movie | TVSerie | Actor) => {
@@ -65,7 +83,8 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
   return (
     <MediaContext.Provider
       value={{
-        favourites,
+        favouriteMovies,
+        favouriteTVSeries,
         mustWatch,
         addToFavourites,
         removeFromFavourites,

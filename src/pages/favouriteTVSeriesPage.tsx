@@ -2,14 +2,14 @@ import React, { useContext } from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { MediaContext } from "../contexts/mediaContext";
 import { useQueries } from "react-query";
-import { getMovie } from "../api/tmdb-api";
+import { getTVSerie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
 import MediaFilterUI from "../components/mediaFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { genreFilter, titleFilter } from "../util";
-import { Media, Movie } from "../types/interfaces";
+import { Media, TVSerie } from "../types/interfaces";
 
 const titleFiltering = {
   name: "title",
@@ -22,8 +22,8 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-const FavouriteMoviesPage: React.FC = () => {
-  const { favouriteMovies: mediaIds } = useContext(MediaContext);
+const FavouriteTVSeriesPage: React.FC = () => {
+  const { favouriteTVSeries: mediaIds } = useContext(MediaContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([
     titleFiltering,
     genreFiltering,
@@ -32,8 +32,8 @@ const FavouriteMoviesPage: React.FC = () => {
   const favouriteMediaQueries = useQueries(
     mediaIds.map((mediaId) => {
       return {
-        queryKey: ["movie", mediaId],
-        queryFn: () => getMovie(mediaId.toString()),
+        queryKey: ["tvSeries", mediaId],
+        queryFn: () => getTVSerie(mediaId.toString()),
       };
     })
   );
@@ -45,11 +45,11 @@ const FavouriteMoviesPage: React.FC = () => {
   }
 
   const allFavourites = favouriteMediaQueries.map((q) => q.data) as Media[];
-  const favouriteMovies = allFavourites.filter(
-    (media) => media?.mediaType === "movie"
-  ) as Movie[];
-  const displayedMovies = favouriteMovies
-    ? filterFunction(favouriteMovies)
+  const favouriteTVSeries = allFavourites.filter(
+    (media) => media?.mediaType === "tv"
+  ) as TVSerie[];
+  const displayedTVSeries = favouriteTVSeries
+    ? filterFunction(favouriteTVSeries)
     : [];
 
   const changeFilterValues = (type: string, value: string) => {
@@ -73,8 +73,8 @@ const FavouriteMoviesPage: React.FC = () => {
   return (
     <>
       <PageTemplate
-        title='Favorite Movies'
-        media={displayedMovies}
+        title='Favorite TV Series'
+        media={displayedTVSeries}
         action={action}
       />
       <MediaFilterUI
@@ -86,4 +86,4 @@ const FavouriteMoviesPage: React.FC = () => {
   );
 };
 
-export default FavouriteMoviesPage;
+export default FavouriteTVSeriesPage;
