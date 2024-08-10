@@ -4,6 +4,7 @@ import { Movie, TVSerie, Actor, Review } from "../types/interfaces";
 interface MediaContextInterface {
   favouriteMovies: number[];
   favouriteTVSeries: number[];
+  favouriteActors: number[];
   mustWatch: number[];
   addToFavourites: (item: Movie | TVSerie | Actor) => void;
   removeFromFavourites: (item: Movie | TVSerie | Actor) => void;
@@ -14,6 +15,7 @@ interface MediaContextInterface {
 const initialContextState: MediaContextInterface = {
   favouriteMovies: [],
   favouriteTVSeries: [],
+  favouriteActors: [],
   mustWatch: [],
   addToFavourites: () => {},
   removeFromFavourites: () => {},
@@ -32,6 +34,7 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
   const [myReviews, setMyReviews] = useState<Record<number, Review>>({});
   const [favouriteMovies, setFavouriteMovies] = useState<number[]>([]);
   const [favouriteTVSeries, setFavouriteTVSeries] = useState<number[]>([]);
+  const [favouriteActors, setFavouriteActors] = useState<number[]>([]);
   const [mustWatch, setMustWatch] = useState<number[]>([]);
 
   const addToFavourites = useCallback((item: Movie | TVSerie | Actor) => {
@@ -49,6 +52,13 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
         }
         return prevFavourites;
       });
+    } else if (item.mediaType === "actor") {
+      setFavouriteActors((prevFavourites) => {
+        if (!prevFavourites.includes(item.id)) {
+          return [...prevFavourites, item.id];
+        }
+        return prevFavourites;
+      });
     }
   }, []);
 
@@ -60,6 +70,10 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
     } else if (item.mediaType === "tv") {
       setFavouriteTVSeries((prevFavourites) =>
         prevFavourites.filter((mId) => mId !== item.id)
+      );
+    } else if (item.mediaType === "actor") {
+      setFavouriteActors((prevFavourites) =>
+        prevFavourites.filter((aId) => aId !== item.id)
       );
     }
   }, []);
@@ -85,6 +99,7 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
       value={{
         favouriteMovies,
         favouriteTVSeries,
+        favouriteActors,
         mustWatch,
         addToFavourites,
         removeFromFavourites,

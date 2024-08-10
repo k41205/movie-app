@@ -11,7 +11,14 @@ const MediaDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 
-  const mediaType = location.pathname.includes("/movies/") ? "movie" : "tv";
+  let mediaType = "movie";
+  if (location.pathname.includes("/movies/")) {
+    mediaType = "movie";
+  } else if (location.pathname.includes("/tv/")) {
+    mediaType = "tv";
+  } else if (location.pathname.includes("/actors/")) {
+    mediaType = "actor";
+  }
 
   const fetchFunction = () => getMediaDetails(id || "", mediaType);
 

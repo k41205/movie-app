@@ -50,7 +50,7 @@ export interface Actor {
   gender: number;
   known_for_department: string;
   profile_path: string;
-  known_for: (Movie | TVSerie)[];
+  known_for: KnownForMedia[];
   mediaType: "actor";
 }
 
@@ -149,7 +149,7 @@ export interface WriteReviewProps {
   item: Media;
 }
 
-export type MediaDetailsProps = Movie | TVSerie;
+type MediaDetailsProps = Movie | TVSerie | Actor;
 
 export interface HeaderProps {
   title: string;
@@ -166,4 +166,12 @@ export interface TemplateMediaPageProps {
 export interface Genre {
   id: number;
   name: string;
+}
+
+export interface KnownForMedia {
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path?: string;
+  media_type: string;
 }

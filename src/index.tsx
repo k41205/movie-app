@@ -14,6 +14,8 @@ import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import MostPopularMoviesPage from "./pages/mostPopularMoviesPage";
 import TVSeriesPage from "./pages/tvSeriesPage";
 import FavouriteTVSeriesPage from "./pages/favouriteTVSeriesPage";
+import ActorsPage from "./pages/actorsPage";
+import FavouriteActorsPage from "./pages/favouriteActorsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,15 +35,21 @@ export const App = () => {
         <MediaContextProvider>
           <Routes>
             <Route path='/movies/favourites' element={<FavoriteMoviesPage />} />
-            <Route
-              path='/tvseries/favourites'
-              element={<FavouriteTVSeriesPage />}
-            />
             <Route path='/movies/:id' element={<MediaDetailsPage />} />
             <Route path='/movies/upcoming' element={<UpcomingMoviesPage />} />
             <Route path='/movies/popular' element={<MostPopularMoviesPage />} />
             <Route path='/tvseries' element={<TVSeriesPage />} />
             <Route path='/tvseries/:id' element={<MediaDetailsPage />} />
+            <Route
+              path='/tvseries/favourites'
+              element={<FavouriteTVSeriesPage />}
+            />
+            <Route path='/actors' element={<ActorsPage />} />
+            <Route path='/actors/:id' element={<MediaDetailsPage />} />
+            <Route
+              path='/actors/favourites'
+              element={<FavouriteActorsPage />}
+            />
             <Route path='/reviews/:id' element={<MediaReviewPage />} />
             <Route path='/reviews/form' element={<AddMovieReviewPage />} />
             <Route path='/' element={<HomePage />} />

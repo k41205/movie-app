@@ -31,12 +31,16 @@ const styles = {
 };
 
 const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
-  const { favouriteMovies, favouriteTVSeries } = useContext(MediaContext);
+  const { favouriteMovies, favouriteTVSeries, favouriteActors } =
+    useContext(MediaContext);
 
-  const isFavourite =
-    item.mediaType === "movie"
-      ? favouriteMovies.includes(item.id)
-      : favouriteTVSeries.includes(item.id);
+  const favouriteMap = {
+    movie: favouriteMovies,
+    tv: favouriteTVSeries,
+    actor: favouriteActors,
+  };
+
+  const isFavourite = favouriteMap[item.mediaType]?.includes(item.id) || false;
 
   const displayTitle = (item: Media) => {
     if ((item as Movie).title) return (item as Movie).title;
@@ -48,7 +52,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
     if ((item as Movie).release_date) return (item as Movie).release_date;
     if ((item as TVSerie).first_air_date)
       return (item as TVSerie).first_air_date;
-    return null;
+    return (item as Actor).birthday || "N/A";
   };
 
   const displayPosterPath = (item: Media) => {
@@ -61,6 +65,15 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
   const displayVoteAverage = (item: Media) => {
     if ((item as Movie).vote_average) return (item as Movie).vote_average;
     if ((item as TVSerie).vote_average) return (item as TVSerie).vote_average;
+    return (item as Actor).popularity.toFixed(2);
+  };
+
+  const displayKnownFor = (item: Media) => {
+    if ((item as Actor).known_for) {
+      return (item as Actor).known_for
+        .map((known) => known.title || known.name)
+        .join(", ");
+    }
     return null;
   };
 
@@ -86,22 +99,39 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
       />
       <CardContent>
         <Grid container>
-          <Grid item xs={6}>
-            <Typography variant='h6' component='p'>
-              <CalendarIcon fontSize='small' />
-              {displayReleaseDate(item)}
-            </Typography>
-          </Grid>
+          {item.mediaType === "movie" && (
+            <Grid item xs={6}>
+              <Typography variant='h6' component='p'>
+                <CalendarIcon fontSize='small' />
+                {displayReleaseDate(item)}
+              </Typography>
+            </Grid>
+          )}
+          {item.mediaType === "tv" && (
+            <Grid item xs={6}>
+              <Typography variant='h6' component='p'>
+                <CalendarIcon fontSize='small' />
+                {displayReleaseDate(item)}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={6}>
             <Typography variant='h6' component='p'>
               <StarRateIcon fontSize='small' />
               {"  "} {displayVoteAverage(item)}{" "}
             </Typography>
           </Grid>
+          {item.mediaType === "actor" && displayKnownFor(item) && (
+            <Grid item xs={12}>
+              <Typography variant='h6' component='p'>
+                Known for: {displayKnownFor(item)}
+              </Typography>
+            </Grid>
+          )}
         </Grid>
       </CardContent>
       <CardActions disableSpacing>
-        {action}
+        {action(item)}
         {item.mediaType === "movie" && (
           <Link to={`/movies/${item.id}`}>
             <Button variant='outlined' size='medium' color='primary'>
@@ -111,6 +141,13 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
         )}
         {item.mediaType === "tv" && (
           <Link to={`/tvseries/${item.id}`}>
+            <Button variant='outlined' size='medium' color='primary'>
+              More Info ...
+            </Button>
+          </Link>
+        )}
+        {item.mediaType === "actor" && (
+          <Link to={`/actors/${item.id}`}>
             <Button variant='outlined' size='medium' color='primary'>
               More Info ...
             </Button>
