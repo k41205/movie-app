@@ -1,7 +1,12 @@
 import React from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getTVSeries } from "../api/tmdb-api";
-import { Media, DiscoverResponse, TVSerie } from "../types/interfaces";
+import {
+  Media,
+  DiscoverResponse,
+  TVSerie,
+  SortOption,
+} from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -20,15 +25,24 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
+const initialSortOption: SortOption = {
+  name: "title",
+  direction: "asc",
+};
+
 const TVSeriesPage: React.FC = () => {
   const { data, error, isLoading, isError } = useQuery<
     DiscoverResponse<TVSerie>,
     Error
   >("tvSeries", getTVSeries);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering([
-    titleFiltering,
-    genreFiltering,
-  ]);
+
+  const {
+    filterValues,
+    setFilterValues,
+    sortOption,
+    setSortOption,
+    applyFilterAndSort,
+  } = useFiltering([titleFiltering, genreFiltering], initialSortOption);
 
   if (isLoading) {
     return <Spinner />;
@@ -47,8 +61,12 @@ const TVSeriesPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
+  const changeSortOption = (name: string, direction: "asc" | "desc") => {
+    setSortOption({ name, direction });
+  };
+
   const tvSeries = data ? data.results : [];
-  const displayedTVSeries = filterFunction(tvSeries);
+  const displayedTVSeries = applyFilterAndSort(tvSeries);
 
   const action = (tvSerie: Media) => {
     return <AddToFavouritesIcon item={tvSerie as TVSerie} />;
@@ -63,8 +81,10 @@ const TVSeriesPage: React.FC = () => {
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
+        onSortOptionChange={changeSortOption}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+        sortOption={sortOption}
       />
     </>
   );

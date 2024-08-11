@@ -9,7 +9,7 @@ import MediaFilterUI from "../components/mediaFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { genreFilter, titleFilter } from "../util";
-import { Media, Movie } from "../types/interfaces";
+import { Media, Movie, SortOption } from "../types/interfaces";
 
 const titleFiltering = {
   name: "title",
@@ -22,12 +22,21 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
+const initialSortOption: SortOption = {
+  name: "title",
+  direction: "asc",
+};
+
 const FavouriteMoviesPage: React.FC = () => {
   const { favouriteMovies: mediaIds } = useContext(MediaContext);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering([
-    titleFiltering,
-    genreFiltering,
-  ]);
+
+  const {
+    filterValues,
+    setFilterValues,
+    sortOption,
+    setSortOption,
+    applyFilterAndSort,
+  } = useFiltering([titleFiltering, genreFiltering], initialSortOption);
 
   const favouriteMediaQueries = useQueries(
     mediaIds.map((mediaId) => {
@@ -44,14 +53,6 @@ const FavouriteMoviesPage: React.FC = () => {
     return <Spinner />;
   }
 
-  const allFavourites = favouriteMediaQueries.map((q) => q.data) as Media[];
-  const favouriteMovies = allFavourites.filter(
-    (media) => media?.mediaType === "movie"
-  ) as Movie[];
-  const displayedMovies = favouriteMovies
-    ? filterFunction(favouriteMovies)
-    : [];
-
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value: value };
     const updatedFilterSet =
@@ -60,6 +61,18 @@ const FavouriteMoviesPage: React.FC = () => {
         : [filterValues[0], changedFilter];
     setFilterValues(updatedFilterSet);
   };
+
+  const changeSortOption = (name: string, direction: "asc" | "desc") => {
+    setSortOption({ name, direction });
+  };
+
+  const allFavourites = favouriteMediaQueries.map((q) => q.data) as Media[];
+  const favouriteMovies = allFavourites.filter(
+    (media) => media?.mediaType === "movie"
+  ) as Movie[];
+  const displayedMovies = favouriteMovies
+    ? applyFilterAndSort(favouriteMovies)
+    : [];
 
   const action = (media: Media) => {
     return (
@@ -79,8 +92,10 @@ const FavouriteMoviesPage: React.FC = () => {
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
+        onSortOptionChange={changeSortOption}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+        sortOption={sortOption}
       />
     </>
   );

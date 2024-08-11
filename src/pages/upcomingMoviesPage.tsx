@@ -1,7 +1,12 @@
 import React from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getMoviesUpcoming } from "../api/tmdb-api";
-import { Movie, Media, DiscoverResponse } from "../types/interfaces";
+import {
+  Movie,
+  Media,
+  DiscoverResponse,
+  SortOption,
+} from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -20,15 +25,24 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
+const initialSortOption: SortOption = {
+  name: "title",
+  direction: "asc",
+};
+
 const UpcomingMoviesPage: React.FC = () => {
   const { data, error, isLoading, isError } = useQuery<
     DiscoverResponse<Movie>,
     Error
   >("upcomingMovies", getMoviesUpcoming);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering([
-    titleFiltering,
-    genreFiltering,
-  ]);
+
+  const {
+    filterValues,
+    setFilterValues,
+    sortOption,
+    setSortOption,
+    applyFilterAndSort,
+  } = useFiltering([titleFiltering, genreFiltering], initialSortOption);
 
   if (isLoading) {
     return <Spinner />;
@@ -47,8 +61,12 @@ const UpcomingMoviesPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
+  const changeSortOption = (name: string, direction: "asc" | "desc") => {
+    setSortOption({ name, direction });
+  };
+
   const movies = data ? data.results : [];
-  const displayedMovies = filterFunction(movies);
+  const displayedMovies = applyFilterAndSort(movies);
 
   const action = (movie: Media) => {
     return <AddToFavouritesIcon item={movie as Movie} />;
@@ -63,8 +81,10 @@ const UpcomingMoviesPage: React.FC = () => {
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
+        onSortOptionChange={changeSortOption}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+        sortOption={sortOption}
       />
     </>
   );

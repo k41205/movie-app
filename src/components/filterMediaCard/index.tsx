@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from "react";
-import { FilterOption, GenreData } from "../../types/interfaces";
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -11,16 +10,15 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SortIcon from "@mui/icons-material/Sort";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
+import { GenreData, FilterOption } from "../../types/interfaces";
+import { getGenres } from "../../api/tmdb-api";
 
 const styles = {
   root: {
     maxWidth: 345,
   },
-  media: { height: 300 },
-
   formControl: {
     margin: 1,
     minWidth: 220,
@@ -30,14 +28,20 @@ const styles = {
 
 interface FilterMoviesCardProps {
   onUserInput: (f: FilterOption, s: string) => void;
+  onSortChange: (name: string, direction: "asc" | "desc") => void;
   titleFilter: string;
   genreFilter: string;
+  sortOption: { name: string; direction: "asc" | "desc" };
+  isActorPage?: boolean;
 }
 
 const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
   titleFilter,
   genreFilter,
+  sortOption,
   onUserInput,
+  onSortChange,
+  isActorPage = false,
 }) => {
   const { data, error, isLoading, isError } = useQuery<GenreData, Error>(
     "genres",
@@ -72,6 +76,11 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
     handleChange(e, "genre", e.target.value);
   };
 
+  const handleSortChange = (e: SelectChangeEvent) => {
+    const [name, direction] = e.target.value.split("-");
+    onSortChange(name, direction as "asc" | "desc");
+  };
+
   return (
     <>
       <Card sx={styles.root} variant='outlined'>
@@ -89,23 +98,26 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
             variant='filled'
             onChange={handleTextChange}
           />
-          <FormControl sx={styles.formControl}>
-            <InputLabel id='genre-label'></InputLabel>
-            <Select
-              labelId='genre-label'
-              id='genre-select'
-              value={genreFilter}
-              onChange={handleGenreChange}
-            >
-              {genres.map((genre) => {
-                return (
-                  <MenuItem key={genre.id} value={genre.id}>
-                    {genre.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
+          {!isActorPage && (
+            <FormControl sx={styles.formControl} variant='outlined'>
+              <InputLabel id='genre-label'>Genre</InputLabel>
+              <Select
+                labelId='genre-label'
+                id='genre-select'
+                value={genreFilter}
+                label='Genre'
+                onChange={handleGenreChange}
+              >
+                {genres.map((genre) => {
+                  return (
+                    <MenuItem key={genre.id} value={genre.id}>
+                      {genre.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          )}
         </CardContent>
       </Card>
       <Card sx={styles.root} variant='outlined'>
@@ -114,6 +126,25 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
             <SortIcon fontSize='large' />
             Sort the movies.
           </Typography>
+          <FormControl sx={styles.formControl} variant='outlined'>
+            <InputLabel id='sort-label'>Sort By</InputLabel>
+            <Select
+              labelId='sort-label'
+              id='sort-select'
+              value={`${sortOption.name}-${sortOption.direction}`}
+              onChange={handleSortChange}
+              label='Sort By'
+            >
+              <MenuItem value='title-asc'>Title (A-Z)</MenuItem>
+              <MenuItem value='title-desc'>Title (Z-A)</MenuItem>
+              <MenuItem value='release_date-asc'>
+                Release Date (Oldest)
+              </MenuItem>
+              <MenuItem value='release_date-desc'>
+                Release Date (Newest)
+              </MenuItem>
+            </Select>
+          </FormControl>
         </CardContent>
       </Card>
     </>

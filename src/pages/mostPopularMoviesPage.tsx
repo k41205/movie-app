@@ -20,15 +20,24 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
+const initialSortOption = {
+  name: "title",
+  direction: "asc",
+};
+
 const MostPopularMoviesPage: React.FC = () => {
   const { data, error, isLoading, isError } = useQuery<
     DiscoverResponse<Movie>,
     Error
   >("mostPopularMovies", getMostPopularMovies);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering([
-    titleFiltering,
-    genreFiltering,
-  ]);
+
+  const {
+    filterValues,
+    setFilterValues,
+    sortOption,
+    setSortOption,
+    applyFilterAndSort,
+  } = useFiltering([titleFiltering, genreFiltering], initialSortOption);
 
   if (isLoading) {
     return <Spinner />;
@@ -47,22 +56,30 @@ const MostPopularMoviesPage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
+  const changeSortOption = (name: string, direction: "asc" | "desc") => {
+    setSortOption({ name, direction });
+  };
+
   const movies = data ? data.results : [];
-  const displayedMovies = filterFunction(movies);
+  const displayedMovies = applyFilterAndSort(movies);
+
+  const action = (movie: Media) => {
+    return <AddToFavouritesIcon item={movie as Movie} />;
+  };
 
   return (
     <>
       <PageTemplate
         title='Most Popular Movies'
         media={displayedMovies}
-        action={(media: Media) => {
-          return <AddToFavouritesIcon item={media as Movie} />;
-        }}
+        action={action}
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
+        onSortOptionChange={changeSortOption}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+        sortOption={sortOption}
       />
     </>
   );

@@ -8,19 +8,39 @@ import useFiltering from "../hooks/useFiltering";
 import MediaFilterUI from "../components/mediaFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import { titleFilter } from "../util";
-import { Media, Actor } from "../types/interfaces";
+import { Media, Actor, SortOption } from "../types/interfaces";
 
-const titleFiltering = {
-  name: "title",
+const nameFiltering = {
+  name: "name",
   value: "",
   condition: titleFilter,
 };
 
+const initialSortOption: SortOption = {
+  name: "title",
+  direction: "asc",
+};
+
 const FavouriteActorsPage: React.FC = () => {
   const { favouriteActors: mediaIds } = useContext(MediaContext);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering([
-    titleFiltering,
-  ]);
+
+  const {
+    filterValues,
+    setFilterValues,
+    sortOption,
+    setSortOption,
+    applyFilterAndSort,
+  } = useFiltering([nameFiltering], initialSortOption);
+
+  const changeFilterValues = (type: string, value: string) => {
+    const changedFilter = { name: type, value: value };
+    const updatedFilterSet = [changedFilter];
+    setFilterValues(updatedFilterSet);
+  };
+
+  const changeSortOption = (name: string, direction: "asc" | "desc") => {
+    setSortOption({ name, direction });
+  };
 
   const favouriteMediaQueries = useQueries(
     mediaIds.map((mediaId) => {
@@ -41,15 +61,10 @@ const FavouriteActorsPage: React.FC = () => {
   const favouriteActors = allFavourites.filter(
     (media) => media?.mediaType === "actor"
   ) as Actor[];
-  const displayedActors = favouriteActors
-    ? filterFunction(favouriteActors)
-    : [];
 
-  const changeFilterValues = (type: string, value: string) => {
-    const changedFilter = { name: type, value: value };
-    const updatedFilterSet = [changedFilter];
-    setFilterValues(updatedFilterSet);
-  };
+  const displayedActors = favouriteActors
+    ? applyFilterAndSort(favouriteActors)
+    : [];
 
   const action = (media: Media) => {
     return <RemoveFromFavourites item={media} />;
@@ -64,8 +79,10 @@ const FavouriteActorsPage: React.FC = () => {
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
+        onSortOptionChange={changeSortOption}
         titleFilter={filterValues[0].value}
-        genreFilter={""}
+        sortOption={sortOption}
+        isActorPage={true}
       />
     </>
   );

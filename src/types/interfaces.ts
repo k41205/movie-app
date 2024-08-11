@@ -175,3 +175,8 @@ export interface KnownForMedia {
   poster_path?: string;
   media_type: string;
 }
+
+export interface SortOption {
+  name: string;
+  direction: "asc" | "desc";
+}

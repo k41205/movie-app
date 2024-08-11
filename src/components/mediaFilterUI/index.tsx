@@ -17,14 +17,20 @@ const styles = {
 
 interface MediaFilterUIProps {
   onFilterValuesChange: (f: string, s: string) => void;
+  onSortOptionChange: (name: string, direction: "asc" | "desc") => void;
   titleFilter: string;
-  genreFilter: string;
+  genreFilter?: string;
+  sortOption: { name: string; direction: "asc" | "desc" };
+  isActorPage?: boolean;
 }
 
 const MediaFilterUI: React.FC<MediaFilterUIProps> = ({
   onFilterValuesChange,
+  onSortOptionChange,
   titleFilter,
   genreFilter,
+  sortOption,
+  isActorPage = false,
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -45,8 +51,11 @@ const MediaFilterUI: React.FC<MediaFilterUIProps> = ({
       >
         <FilterCard
           onUserInput={onFilterValuesChange}
+          onSortChange={onSortOptionChange}
           titleFilter={titleFilter}
           genreFilter={genreFilter}
+          sortOption={sortOption}
+          isActorPage={isActorPage}
         />
       </Drawer>
     </>
