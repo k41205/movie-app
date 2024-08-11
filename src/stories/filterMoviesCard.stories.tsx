@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import FilterMoviesCard from "../components/filterMoviesCard";
+import type { Meta, StoryObj } from "@storybook/react";
+import FilterMoviesCard from "../components/filterMediaCard";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 import { QueryClientProvider, QueryClient } from "react-query";
-import React from 'react';
+import React from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,12 +16,19 @@ const queryClient = new QueryClient({
 });
 
 const meta = {
-  title: 'Home Page/FilterMoviesCard',
+  title: "Home Page/FilterMoviesCard",
   component: FilterMoviesCard,
   decorators: [
-    (Story: React.FC) => <MemoryRouter initialEntries={["/"]}><Story /></MemoryRouter>,
-    (Story: React.FC) => (<QueryClientProvider client={queryClient}><Story /></QueryClientProvider>
-    )
+    (Story: React.FC) => (
+      <MemoryRouter initialEntries={["/"]}>
+        <Story />
+      </MemoryRouter>
+    ),
+    (Story: React.FC) => (
+      <QueryClientProvider client={queryClient}>
+        <Story />
+      </QueryClientProvider>
+    ),
   ],
 } satisfies Meta<typeof FilterMoviesCard>;
 

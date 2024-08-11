@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FilterCard from "../filterMoviesCard";
+import FilterCard from "../filterMediaCard";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 
