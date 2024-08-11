@@ -7,9 +7,11 @@ import {
   TVSerie,
 } from "../types/interfaces";
 
-export const getMovies = (): Promise<DiscoverResponse<Movie>> => {
+export const getMovies = (
+  page: number = 1
+): Promise<DiscoverResponse<Movie>> => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1&sort_by=vote_count.desc`
+    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}&sort_by=vote_count.desc`
   )
     .then((response) => {
       if (!response.ok)
@@ -30,9 +32,11 @@ export const getMovies = (): Promise<DiscoverResponse<Movie>> => {
     });
 };
 
-export const getMoviesUpcoming = (): Promise<DiscoverResponse<Movie>> => {
+export const getMoviesUpcoming = (
+  page: number = 1
+): Promise<DiscoverResponse<Movie>> => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
   )
     .then((response) => {
       if (!response.ok) {
@@ -116,9 +120,11 @@ export const getMovieReviews = (
     });
 };
 
-export const getMostPopularMovies = (): Promise<DiscoverResponse<Movie>> => {
+export const getMostPopularMovies = (
+  page: number = 1
+): Promise<DiscoverResponse<Movie>> => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
   )
     .then((response) => {
       if (!response.ok) {
@@ -149,9 +155,11 @@ export const getTVSeriesReviews = (
     });
 };
 
-export const getTVSeries = (): Promise<DiscoverResponse<TVSerie>> => {
+export const getTVSeries = (
+  page: number = 1
+): Promise<DiscoverResponse<TVSerie>> => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&api_key=${import.meta.env.VITE_TMDB_KEY}`
+    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=${page}&sort_by=popularity.desc&api_key=${import.meta.env.VITE_TMDB_KEY}`
   )
     .then((response) => {
       if (!response.ok) {
@@ -211,9 +219,11 @@ export const getMediaDetails = async (
   }
 };
 
-export const getActors = (): Promise<DiscoverResponse<Actor>> => {
+export const getActors = (
+  page: number = 1
+): Promise<DiscoverResponse<Actor>> => {
   return fetch(
-    `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
   )
     .then((response) => {
       if (!response.ok)

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { MediaContext } from "../contexts/mediaContext";
 import { useQueries } from "react-query";
@@ -23,6 +23,9 @@ const initialSortOption: SortOption = {
 
 const FavouriteActorsPage: React.FC = () => {
   const { favouriteActors: mediaIds } = useContext(MediaContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 18;
+  const totalPages = Math.ceil(mediaIds.length / itemsPerPage);
 
   const {
     filterValues,
@@ -43,12 +46,14 @@ const FavouriteActorsPage: React.FC = () => {
   };
 
   const favouriteMediaQueries = useQueries(
-    mediaIds.map((mediaId) => {
-      return {
-        queryKey: ["actor", mediaId],
-        queryFn: () => getActor(mediaId.toString()),
-      };
-    })
+    mediaIds
+      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+      .map((mediaId) => {
+        return {
+          queryKey: ["actor", mediaId],
+          queryFn: () => getActor(mediaId.toString()),
+        };
+      })
   );
 
   const isLoading = favouriteMediaQueries.find((m) => m.isLoading === true);
@@ -70,12 +75,20 @@ const FavouriteActorsPage: React.FC = () => {
     return <RemoveFromFavourites item={media} />;
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <>
       <PageTemplate
         title='Favorite Actors'
         media={displayedActors}
         action={action}
+        page={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        isFavoritesPage={true}
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}

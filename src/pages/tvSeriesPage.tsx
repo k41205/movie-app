@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getTVSeries } from "../api/tmdb-api";
 import {
@@ -31,10 +31,14 @@ const initialSortOption: SortOption = {
 };
 
 const TVSeriesPage: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { data, error, isLoading, isError } = useQuery<
     DiscoverResponse<TVSerie>,
     Error
-  >("tvSeries", getTVSeries);
+  >(["tvSeries", currentPage], () => getTVSeries(currentPage), {
+    keepPreviousData: true,
+  });
 
   const {
     filterValues,
@@ -65,6 +69,12 @@ const TVSeriesPage: React.FC = () => {
     setSortOption({ name, direction });
   };
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= (data?.total_pages || 1)) {
+      setCurrentPage(newPage);
+    }
+  };
+
   const tvSeries = data ? data.results : [];
   const displayedTVSeries = applyFilterAndSort(tvSeries);
 
@@ -78,6 +88,9 @@ const TVSeriesPage: React.FC = () => {
         title='Popular TV Series'
         media={displayedTVSeries}
         action={action}
+        page={currentPage}
+        totalPages={data?.total_pages || 1}
+        onPageChange={handlePageChange}
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}

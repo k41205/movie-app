@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getActors } from "../api/tmdb-api";
 import {
@@ -26,10 +26,14 @@ const initialSortOption: SortOption = {
 };
 
 const ActorsPage: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { data, error, isLoading, isError } = useQuery<
     DiscoverResponse<Actor>,
     Error
-  >("actors", getActors);
+  >(["actors", currentPage], () => getActors(currentPage), {
+    keepPreviousData: true,
+  });
 
   const {
     filterValues,
@@ -57,6 +61,12 @@ const ActorsPage: React.FC = () => {
     setSortOption({ name, direction });
   };
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= (data?.total_pages || 1)) {
+      setCurrentPage(newPage);
+    }
+  };
+
   const actors = data ? data.results : [];
   const displayedActors = applyFilterAndSort(actors);
 
@@ -70,6 +80,9 @@ const ActorsPage: React.FC = () => {
         title='Popular Actors'
         media={displayedActors}
         action={action}
+        page={currentPage}
+        totalPages={data?.total_pages || 1}
+        onPageChange={handlePageChange}
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}

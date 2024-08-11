@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { MediaContext } from "../contexts/mediaContext";
 import { useQueries } from "react-query";
@@ -29,6 +29,9 @@ const initialSortOption: SortOption = {
 
 const FavouriteTVSeriesPage: React.FC = () => {
   const { favouriteTVSeries: mediaIds } = useContext(MediaContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 18;
+  const totalPages = Math.ceil(mediaIds.length / itemsPerPage);
 
   const {
     filterValues,
@@ -39,12 +42,14 @@ const FavouriteTVSeriesPage: React.FC = () => {
   } = useFiltering([titleFiltering, genreFiltering], initialSortOption);
 
   const favouriteMediaQueries = useQueries(
-    mediaIds.map((mediaId) => {
-      return {
-        queryKey: ["tvSeries", mediaId],
-        queryFn: () => getTVSerie(mediaId.toString()),
-      };
-    })
+    mediaIds
+      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+      .map((mediaId) => {
+        return {
+          queryKey: ["tvSeries", mediaId],
+          queryFn: () => getTVSerie(mediaId.toString()),
+        };
+      })
   );
 
   const isLoading = favouriteMediaQueries.find((m) => m.isLoading === true);
@@ -83,12 +88,20 @@ const FavouriteTVSeriesPage: React.FC = () => {
     );
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <>
       <PageTemplate
         title='Favorite TV Series'
         media={displayedTVSeries}
         action={action}
+        page={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        isFavoritesPage={true}
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}

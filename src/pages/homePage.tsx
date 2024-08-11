@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
@@ -31,10 +31,11 @@ const initialSortOption: SortOption = {
 };
 
 const HomePage: React.FC = () => {
+  const [page, setPage] = useState(1); // Track the current page
   const { data, error, isLoading, isError } = useQuery<
     DiscoverResponse<Movie>,
     Error
-  >("discover", getMovies);
+  >(["discover", page], () => getMovies(page), { keepPreviousData: true });
 
   const {
     filterValues,
@@ -65,6 +66,12 @@ const HomePage: React.FC = () => {
     setSortOption({ name, direction });
   };
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= (data?.total_pages || 1)) {
+      setPage(newPage);
+    }
+  };
+
   const movies = data ? data.results : [];
   const displayedMovies = applyFilterAndSort(movies);
 
@@ -78,6 +85,9 @@ const HomePage: React.FC = () => {
         title='Discover Movies'
         media={displayedMovies}
         action={action}
+        page={page}
+        totalPages={data?.total_pages || 1}
+        onPageChange={handlePageChange}
       />
       <MediaFilterUI
         onFilterValuesChange={changeFilterValues}
