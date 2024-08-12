@@ -95,16 +95,17 @@ const MediaDetails: React.FC<MediaDetailsProps & { images: MovieImage[] }> = (
           ))}
         </Paper>
       )}
-
-      <Fab
-        color='secondary'
-        variant='extended'
-        onClick={() => setDrawerOpen(true)}
-        sx={styles.fab}
-      >
-        <NavigationIcon />
-        Reviews
-      </Fab>
+      {media.mediaType !== "actor" && (
+        <Fab
+          color='secondary'
+          variant='extended'
+          onClick={() => setDrawerOpen(true)}
+          sx={styles.fab}
+        >
+          <NavigationIcon />
+          Reviews
+        </Fab>
+      )}
       <Drawer
         anchor='top'
         open={drawerOpen}
