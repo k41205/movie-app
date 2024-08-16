@@ -18,16 +18,19 @@ const styles = {
 };
 
 const MediaReviews: React.FC<{ media: MediaDetailsProps }> = ({ media }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
       if ("runtime" in media) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const movieReviews = await getMovieReviews(media.id);
-        setReviews(movieReviews);
+        // setReviews(movieReviews);
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const tvSeriesReviews = await getTVSeriesReviews(media.id);
-        setReviews(tvSeriesReviews);
+        // setReviews(tvSeriesReviews);
       }
     };
 

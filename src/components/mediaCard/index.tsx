@@ -99,15 +99,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
       />
       <CardContent>
         <Grid container>
-          {item.mediaType === "movie" && (
-            <Grid item xs={6}>
-              <Typography variant='h6' component='p'>
-                <CalendarIcon fontSize='small' />
-                {displayReleaseDate(item)}
-              </Typography>
-            </Grid>
-          )}
-          {item.mediaType === "tv" && (
+          {(item.mediaType === "movie" || item.mediaType === "tv") && (
             <Grid item xs={6}>
               <Typography variant='h6' component='p'>
                 <CalendarIcon fontSize='small' />
@@ -131,7 +123,7 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, action }) => {
         </Grid>
       </CardContent>
       <CardActions disableSpacing>
-        {action(item)}
+        {action && action(item)}
         {item.mediaType === "movie" && (
           <Link to={`/movies/${item.id}`}>
             <Button variant='outlined' size='medium' color='primary'>

@@ -69,7 +69,7 @@ export interface MediaListProps {
 
 export interface MediaCardProps {
   item: Media;
-  action: React.ReactNode;
+  action: (item: Media) => React.ReactNode;
 }
 
 export interface BaseMovieListProps {
