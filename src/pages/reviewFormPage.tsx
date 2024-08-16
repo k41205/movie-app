@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { getMovie, getTVSerie } from "../api/tmdb-api";
 import ReviewForm from "../components/reviewForm";
 import Spinner from "../components/spinner";
+import { Movie, TVSerie } from "../types/interfaces";
 
 const useQueryParams = () => {
   return new URLSearchParams(useLocation().search);
@@ -25,7 +26,10 @@ const ReviewFormPage: React.FC = () => {
     error,
     isLoading,
     isError,
-  } = useQuery([mediaType, mediaId], () => fetchMedia(mediaId));
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useQuery<Movie | TVSerie, Error>([mediaType, mediaId], () =>
+    fetchMedia(mediaId)
+  );
 
   if (isLoading) {
     return <Spinner />;
@@ -35,11 +39,11 @@ const ReviewFormPage: React.FC = () => {
     return <h1>{error?.message}</h1>;
   }
 
-  return media ? (
-    <ReviewForm media={media} mediaType={mediaType} />
-  ) : (
-    <h1>Media not found</h1>
-  );
+  if (!media) {
+    return <h1>Media not found</h1>;
+  }
+
+  return <ReviewForm media={media} mediaType={mediaType} />;
 };
 
 export default ReviewFormPage;

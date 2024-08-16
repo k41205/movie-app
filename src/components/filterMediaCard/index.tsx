@@ -138,14 +138,14 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
               <MenuItem value='title-asc'>Title (A-Z)</MenuItem>
               <MenuItem value='title-desc'>Title (Z-A)</MenuItem>
               {!isActorPage && (
-                <>
-                  <MenuItem value='release_date-asc'>
-                    Release Date (Oldest)
-                  </MenuItem>
-                  <MenuItem value='release_date-desc'>
-                    Release Date (Newest)
-                  </MenuItem>
-                </>
+                <MenuItem value='release_date-asc'>
+                  Release Date (Oldest)
+                </MenuItem>
+              )}
+              {!isActorPage && (
+                <MenuItem value='release_date-desc'>
+                  Release Date (Newest)
+                </MenuItem>
               )}
             </Select>
           </FormControl>

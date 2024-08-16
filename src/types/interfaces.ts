@@ -149,7 +149,7 @@ export interface WriteReviewProps {
   item: Media;
 }
 
-type MediaDetailsProps = Movie | TVSerie | Actor;
+export type MediaDetailsProps = Movie | TVSerie | Actor;
 
 export interface HeaderProps {
   title: string;

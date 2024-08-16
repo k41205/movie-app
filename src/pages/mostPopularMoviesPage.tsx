@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import PageTemplate from "../components/templateMediaListPage";
 import { getMostPopularMovies } from "../api/tmdb-api";
-import { Media, Movie, DiscoverResponse } from "../types/interfaces";
+import {
+  Media,
+  Movie,
+  DiscoverResponse,
+  SortOption,
+} from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
@@ -20,7 +25,7 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-const initialSortOption = {
+const initialSortOption: SortOption = {
   name: "title",
   direction: "asc",
 };
