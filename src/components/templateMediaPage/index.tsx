@@ -30,15 +30,15 @@ const styles = {
 };
 
 const isMovie = (media: MediaDetailsProps): media is Movie => {
-  return (media as Movie).runtime !== undefined;
+  return media && "title" in media;
 };
 
 const isTVSerie = (media: MediaDetailsProps): media is TVSerie => {
-  return (media as TVSerie).number_of_episodes !== undefined;
+  return media && "number_of_episodes" in media;
 };
 
 const isActor = (media: MediaDetailsProps): media is Actor => {
-  return (media as Actor).known_for_department === "Acting";
+  return media && "known_for_department" in media;
 };
 
 const determineMediaType = (
@@ -61,9 +61,13 @@ const TemplateMediaPage: React.FC<TemplateMediaPageProps> = ({
 }) => {
   const mediaType = determineMediaType(media);
 
-  const { error, isLoading, isError } = useQuery<MovieImage[], Error>(
-    ["images", media.id],
-    () => getMediaImages(media.id, mediaType)
+  const {
+    data: images,
+    error,
+    isLoading,
+    isError,
+  } = useQuery<MovieImage[], Error>(["images", media.id], () =>
+    getMediaImages(media.id, mediaType)
   );
 
   if (isLoading) {

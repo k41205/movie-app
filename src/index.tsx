@@ -10,12 +10,12 @@ import SiteHeader from "./components/siteHeader";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MediaContextProvider from "./contexts/mediaContext";
-import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import MostPopularMoviesPage from "./pages/mostPopularMoviesPage";
 import TVSeriesPage from "./pages/tvSeriesPage";
 import FavouriteTVSeriesPage from "./pages/favouriteTVSeriesPage";
 import ActorsPage from "./pages/actorsPage";
 import FavouriteActorsPage from "./pages/favouriteActorsPage";
+import ReviewFormPage from "./pages/reviewFormPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,7 +51,7 @@ export const App = () => {
               element={<FavouriteActorsPage />}
             />
             <Route path='/reviews/:id' element={<MediaReviewPage />} />
-            <Route path='/reviews/form' element={<AddMovieReviewPage />} />
+            <Route path='/reviews/form' element={<ReviewFormPage />} />
             <Route path='/' element={<HomePage />} />
             <Route path='*' element={<Navigate to='/' />} />
           </Routes>

@@ -14,7 +14,7 @@ const MediaDetailsPage: React.FC = () => {
   let mediaType = "movie";
   if (location.pathname.includes("/movies/")) {
     mediaType = "movie";
-  } else if (location.pathname.includes("/tv/")) {
+  } else if (location.pathname.includes("/tvseries/")) {
     mediaType = "tv";
   } else if (location.pathname.includes("/actors/")) {
     mediaType = "actor";
