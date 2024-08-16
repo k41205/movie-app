@@ -87,7 +87,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
         <CardContent>
           <Typography variant='h5' component='h1'>
             <FilterAltIcon fontSize='large' />
-            Filter the movies.
+            Filter
           </Typography>
           <TextField
             sx={styles.formControl}
@@ -124,7 +124,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
         <CardContent>
           <Typography variant='h5' component='h1'>
             <SortIcon fontSize='large' />
-            Sort the movies.
+            Sort
           </Typography>
           <FormControl sx={styles.formControl} variant='outlined'>
             <InputLabel id='sort-label'>Sort By</InputLabel>
@@ -137,12 +137,16 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
             >
               <MenuItem value='title-asc'>Title (A-Z)</MenuItem>
               <MenuItem value='title-desc'>Title (Z-A)</MenuItem>
-              <MenuItem value='release_date-asc'>
-                Release Date (Oldest)
-              </MenuItem>
-              <MenuItem value='release_date-desc'>
-                Release Date (Newest)
-              </MenuItem>
+              {!isActorPage && (
+                <>
+                  <MenuItem value='release_date-asc'>
+                    Release Date (Oldest)
+                  </MenuItem>
+                  <MenuItem value='release_date-desc'>
+                    Release Date (Newest)
+                  </MenuItem>
+                </>
+              )}
             </Select>
           </FormControl>
         </CardContent>
