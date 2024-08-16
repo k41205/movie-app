@@ -26,16 +26,16 @@ const styles = {
   },
 };
 
-interface FilterMoviesCardProps {
+interface FilterMediasCardProps {
   onUserInput: (f: FilterOption, s: string) => void;
   onSortChange: (name: string, direction: "asc" | "desc") => void;
   titleFilter: string;
-  genreFilter: string;
+  genreFilter?: string;
   sortOption: { name: string; direction: "asc" | "desc" };
   isActorPage?: boolean;
 }
 
-const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
+const FilterMediasCard: React.FC<FilterMediasCardProps> = ({
   titleFilter,
   genreFilter,
   sortOption,
@@ -56,7 +56,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
   }
   const genres = data?.genres || [];
   if (genres[0].name !== "All") {
-    genres.unshift({ id: "0", name: "All" });
+    genres.unshift({ id: 0, name: "All" });
   }
 
   const handleChange = (
@@ -155,4 +155,4 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({
   );
 };
 
-export default FilterMoviesCard;
+export default FilterMediasCard;

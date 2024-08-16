@@ -1,5 +1,4 @@
 import React from "react";
-import MediaHeader from "../headerMedia";
 import Grid from "@mui/material/Grid";
 import { getMediaImages } from "../../api/tmdb-api";
 import {
@@ -90,27 +89,23 @@ const TemplateMediaPage: React.FC<TemplateMediaPageProps> = ({
         : "";
 
   return (
-    <>
-      <MediaHeader {...media} />
-
-      <Grid container spacing={5} style={{ padding: "15px" }}>
-        <Grid item xs={3}>
-          {imagePath && (
-            <div style={styles.gridListTile}>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${imagePath}`}
-                alt={imageAltText}
-                style={styles.poster}
-              />
-            </div>
-          )}
-        </Grid>
-
-        <Grid item xs={9}>
-          {children}
-        </Grid>
+    <Grid container spacing={5} style={{ padding: "15px" }}>
+      <Grid item xs={3}>
+        {imagePath && (
+          <div style={styles.gridListTile}>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${imagePath}`}
+              alt={imageAltText}
+              style={styles.poster}
+            />
+          </div>
+        )}
       </Grid>
-    </>
+
+      <Grid item xs={9}>
+        {children}
+      </Grid>
+    </Grid>
   );
 };
 

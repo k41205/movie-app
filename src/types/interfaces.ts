@@ -1,7 +1,7 @@
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
-  genre_ids: number[];
+  genres: Genre[];
   id: number;
   original_language: string;
   original_title: string;
@@ -21,7 +21,7 @@ export interface Movie {
 export interface TVSerie {
   adult: boolean;
   backdrop_path: string;
-  genre_ids: number[];
+  genres: Genre[];
   id: number;
   origin_country: string[];
   original_language: string;
@@ -41,6 +41,8 @@ export interface TVSerie {
 export type KnownFor = Movie | TVSerie;
 
 export interface Actor {
+  biography?: string;
+  birthday: string;
   id: number;
   name: string;
   original_name: string;
@@ -52,6 +54,7 @@ export interface Actor {
   profile_path: string;
   known_for: KnownForMedia[];
   mediaType: "actor";
+  place_of_birth: string;
 }
 
 export type Media = Movie | TVSerie | Actor;
@@ -124,16 +127,13 @@ export interface Review {
   id: string;
   content: string;
   author: string;
-  agree: boolean;
-  rating: number;
-  movieId: number;
+  agree?: boolean;
+  rating?: number;
+  movieId?: number;
 }
 
 export interface GenreData {
-  genres: {
-    id: string;
-    name: string;
-  }[];
+  genres: Genre[];
 }
 
 export interface DiscoverResponse<T> {

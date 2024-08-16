@@ -18,25 +18,39 @@ const styles = {
 };
 
 const MediaReviews: React.FC<{ media: MediaDetailsProps }> = ({ media }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
       if ("runtime" in media) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const movieReviews = await getMovieReviews(media.id);
-        // setReviews(movieReviews);
+        const mappedMovieReviews = movieReviews.map((review) => ({
+          author: review.author,
+          content: review.content,
+          id: review.id,
+          mediaId: media.id,
+          mediaType: "movie",
+          agree: review.agree || false,
+          rating: review.rating || 0,
+        }));
+        setReviews(mappedMovieReviews);
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const tvSeriesReviews = await getTVSeriesReviews(media.id);
-        // setReviews(tvSeriesReviews);
+        const mappedTvSeriesReviews = tvSeriesReviews.map((review) => ({
+          author: review.author,
+          content: review.content,
+          id: review.id,
+          mediaId: media.id,
+          mediaType: "tv",
+          agree: review.agree || false,
+          rating: review.rating || 0,
+        }));
+        setReviews(mappedTvSeriesReviews);
       }
     };
 
     fetchReviews();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [media.id]);
+  }, [media, media.id]);
 
   return (
     <TableContainer component={Paper}>

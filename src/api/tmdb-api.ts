@@ -1,6 +1,7 @@
 import {
   Actor,
   DiscoverResponse,
+  GenreData,
   KnownForMedia,
   Media,
   Movie,
@@ -55,9 +56,7 @@ export const getMoviesUpcoming = (
     }));
 };
 
-export const getGenres = (): Promise<{
-  genres: { id: number; name: string }[];
-}> => {
+export const getGenres = (): Promise<GenreData> => {
   return fetch(
     `https://api.themoviedb.org/3/genre/movie/list?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
   )
@@ -268,19 +267,17 @@ export const getActor = async (id: string): Promise<Actor> => {
       const creditsData = await knownForResponse.json();
 
       actor.known_for = creditsData.cast.slice(0, 5).map((media: Media) => {
-        if ("title" in media) {
+        if ("poster_path" in media) {
           return {
             id: media.id,
-            title: media.title,
+            title: "title" in media ? media.title : media.name,
             poster_path: media.poster_path,
             media_type: media.mediaType,
           };
-        }
-        if ("name" in media) {
+        } else {
           return {
             id: media.id,
             title: media.name,
-            poster_path: media.poster_path,
             media_type: media.mediaType,
           };
         }

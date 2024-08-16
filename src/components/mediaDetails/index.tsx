@@ -7,6 +7,9 @@ import {
   Genre,
   MovieImage,
   KnownForMedia,
+  Movie,
+  TVSerie,
+  Actor,
 } from "../../types/interfaces";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
@@ -41,17 +44,33 @@ const MediaDetails: React.FC<MediaDetailsProps & { images: MovieImage[] }> = (
 ) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const isMovie = (media: MediaDetailsProps): media is Movie => {
+    return (media as Movie).title !== undefined;
+  };
+
+  const isTVSerie = (media: MediaDetailsProps): media is TVSerie => {
+    return (media as TVSerie).name !== undefined;
+  };
+
+  const isActor = (media: MediaDetailsProps): media is Actor => {
+    return (media as Actor).biography !== undefined;
+  };
+
   return (
     <>
       <Typography variant='h5' component='h3'>
-        {media.name || media.title}
+        {isMovie(media) && media.title}
+        {isTVSerie(media) && media.name}
+        {isActor(media) && media.name}
       </Typography>
 
       <Typography variant='h6' component='p'>
-        {media.overview || media.biography}
+        {isMovie(media) && media.overview}
+        {isTVSerie(media) && media.overview}
+        {isActor(media) && media.biography}
       </Typography>
 
-      {media.mediaType === "actor" && (
+      {isActor(media) && (
         <>
           <Paper component='ul' sx={styles.chipSet}>
             {media.birthday && (
