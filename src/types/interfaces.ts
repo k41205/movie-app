@@ -119,6 +119,8 @@ export interface MoviePageProps {
 export type FilterOption = "title" | "genre";
 
 export interface Review {
+  mediaId: number;
+  mediaType: string;
   id: string;
   content: string;
   author: string;

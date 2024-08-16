@@ -31,7 +31,7 @@ const initialSortOption: SortOption = {
 };
 
 const HomePage: React.FC = () => {
-  const [page, setPage] = useState(1); // Track the current page
+  const [page, setPage] = useState(1);
   const { data, error, isLoading, isError } = useQuery<
     DiscoverResponse<Movie>,
     Error

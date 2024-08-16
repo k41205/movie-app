@@ -9,7 +9,7 @@ interface MediaContextInterface {
   addToFavourites: (item: Movie | TVSerie | Actor) => void;
   removeFromFavourites: (item: Movie | TVSerie | Actor) => void;
   addToMustWatch: (item: Movie | TVSerie | Actor) => void;
-  addReview: (item: Movie | TVSerie, review: Review) => void;
+  addReview?: (item: Movie | TVSerie, review: Review) => void;
 }
 
 const initialContextState: MediaContextInterface = {
@@ -31,7 +31,7 @@ export const MediaContext =
 const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const [myReviews, setMyReviews] = useState<Record<number, Review>>({});
+  // const [myReviews, setMyReviews] = useState<Record<number, Review>>({});
   const [favouriteMovies, setFavouriteMovies] = useState<number[]>([]);
   const [favouriteTVSeries, setFavouriteTVSeries] = useState<number[]>([]);
   const [favouriteActors, setFavouriteActors] = useState<number[]>([]);
@@ -87,12 +87,12 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
     });
   }, []);
 
-  const addReview = (item: Movie | TVSerie, review: Review) => {
-    setMyReviews((prevReviews) => ({
-      ...prevReviews,
-      [item.id]: review,
-    }));
-  };
+  // const addReview = (item: Movie | TVSerie, review: Review) => {
+  //   setMyReviews((prevReviews) => ({
+  //     ...prevReviews,
+  //     [item.id]: review,
+  //   }));
+  // };
 
   return (
     <MediaContext.Provider
@@ -104,7 +104,7 @@ const MediaContextProvider: React.FC<React.PropsWithChildren> = ({
         addToFavourites,
         removeFromFavourites,
         addToMustWatch,
-        addReview,
+        // addReview,
       }}
     >
       {children}

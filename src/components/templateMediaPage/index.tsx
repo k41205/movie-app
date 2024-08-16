@@ -61,13 +61,9 @@ const TemplateMediaPage: React.FC<TemplateMediaPageProps> = ({
 }) => {
   const mediaType = determineMediaType(media);
 
-  const {
-    data: images,
-    error,
-    isLoading,
-    isError,
-  } = useQuery<MovieImage[], Error>(["images", media.id], () =>
-    getMediaImages(media.id, mediaType)
+  const { error, isLoading, isError } = useQuery<MovieImage[], Error>(
+    ["images", media.id],
+    () => getMediaImages(media.id, mediaType)
   );
 
   if (isLoading) {
@@ -78,25 +74,32 @@ const TemplateMediaPage: React.FC<TemplateMediaPageProps> = ({
     return <h1>{error.message}</h1>;
   }
 
+  const imagePath =
+    isMovie(media) || isTVSerie(media)
+      ? media.poster_path
+      : isActor(media)
+        ? media.profile_path
+        : "";
+
+  const imageAltText = isMovie(media)
+    ? `${media.title} Cover`
+    : isTVSerie(media)
+      ? `${media.name} Cover`
+      : isActor(media)
+        ? `${media.name} Portrait`
+        : "";
+
   return (
     <>
       <MediaHeader {...media} />
 
       <Grid container spacing={5} style={{ padding: "15px" }}>
         <Grid item xs={3}>
-          {(media.poster_path || media.profile_path) && (
+          {imagePath && (
             <div style={styles.gridListTile}>
               <img
-                src={`https://image.tmdb.org/t/p/w500${
-                  media.poster_path || media.profile_path
-                }`}
-                alt={
-                  isMovie(media)
-                    ? `${media.title} Cover`
-                    : isTVSerie(media)
-                      ? `${media.name} Cover`
-                      : `${media.name} Portrait`
-                }
+                src={`https://image.tmdb.org/t/p/w500${imagePath}`}
+                alt={imageAltText}
                 style={styles.poster}
               />
             </div>

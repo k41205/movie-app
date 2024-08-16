@@ -1,7 +1,11 @@
 import React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { MediaDetailsProps, MovieDetailsProps } from "../../types/interfaces";
+import {
+  MediaDetailsProps,
+  Movie,
+  MovieDetailsProps,
+} from "../../types/interfaces";
 
 const styles = {
   root: {
@@ -14,7 +18,7 @@ const styles = {
 };
 
 const isMovie = (media: MediaDetailsProps): media is MovieDetailsProps => {
-  return (media as MovieDetailsProps).runtime !== undefined;
+  return (media as Movie).runtime !== undefined;
 };
 
 const MediaHeader: React.FC<MediaDetailsProps> = (media) => {
