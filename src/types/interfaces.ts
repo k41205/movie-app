@@ -2,6 +2,7 @@ export interface Movie {
   adult: boolean;
   backdrop_path: string;
   genres: Genre[];
+  genre_ids: number[];
   id: number;
   original_language: string;
   original_title: string;
@@ -22,6 +23,7 @@ export interface TVSerie {
   adult: boolean;
   backdrop_path: string;
   genres: Genre[];
+  genre_ids: number[];
   id: number;
   origin_country: string[];
   original_language: string;

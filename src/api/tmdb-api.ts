@@ -109,7 +109,15 @@ export const getMediaImages = (id: string | number, mediaType: string) => {
 
 export const getMovieReviews = (
   id: string | number
-): Promise<{ author: string; content: string; id: string }[]> => {
+): Promise<
+  {
+    rating: number;
+    agree: boolean;
+    author: string;
+    content: string;
+    id: string;
+  }[]
+> => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`
   )
@@ -144,7 +152,15 @@ export const getMostPopularMovies = (
 
 export const getTVSeriesReviews = (
   id: string | number
-): Promise<{ author: string; content: string; id: string }[]> => {
+): Promise<
+  {
+    rating: number;
+    agree: boolean;
+    author: string;
+    content: string;
+    id: string;
+  }[]
+> => {
   return fetch(
     `https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`
   )
