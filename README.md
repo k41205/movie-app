@@ -4,8 +4,6 @@
 
 **Name:** Giacomo Cavarretta
 
-**Video Demo:** {YT LINK}
-
 This repository contains an implementation of the Movie Fans Web Application using the React library.
 
 ### Features
@@ -19,50 +17,48 @@ This repository contains an implementation of the Movie Fans Web Application usi
 #### New implementations [exam]
 
 - Popular movies page
-
-<!-- ### Setup requirements.
-
-[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.] -->
+- TV Series page
+- TV Serie details page
+- TV Serie favourite page
+- Actor page
+- Actor details page
+- Actor favourite page
+- Sort options: Title (A-Z), Title (Z-A), Release Date (Oldest), Release Date (Newest)
+- Pagination
 
 ### API endpoints
 
-- Get collection of popular movies - http://localhost:3000/
-- Get collection of upcoming movies - http://localhost:3000/movies/upcoming
-- Get details of a movie - http://localhost:3000/movies/id
-- Get details of a review movie - http://localhost:3000/reviews/id
-- Get collection of movie genres - Used in the filter
+- Get the details of a review - [/reviews/:id](https://movie-app-36rr.onrender.com/reviews/5adff809c3a3683daa00ad3d)
+- Go to form page - [/reviews/form](https://movie-app-36rr.onrender.com/reviews/form?mediaId=299536&mediaType=movie)
+- Get collection of discover movies - [/](https://movie-app-36rr.onrender.com/)
+- Get collection of upcoming movies - [/movies/upcoming](https://movie-app-36rr.onrender.com/movies/upcoming)
+- Get details of a movie - [/movies/:id](https://movie-app-36rr.onrender.com/movies/299534)
+- Go to favourite movies page - [/movies/favourites](https://movie-app-36rr.onrender.com/movies/favourites)
 
 #### New implementations [exam]
 
-- Get collection of popular movies - http://localhost:3000/movies/popular
+- Get collection of popular movies - [/movies/popular](https://movie-app-36rr.onrender.com/movies/popular)
+- Get collection of discover tv series - [/tvseries](https://movie-app-36rr.onrender.com/tvseries)
+- Get details of a tv serie - [/tvseries/:id](https://movie-app-36rr.onrender.com/tvseries/94997)
+- Go to favourite tv series page - [/tvseries/favourites](https://movie-app-36rr.onrender.com/tvseries/favourites)
+- Get collection of discover actors - [/actors](https://movie-app-36rr.onrender.com/actors)
+- Get details of an actor - [/actors/:id](https://movie-app-36rr.onrender.com/actors/115440)
+- Go to favourite actor page - [/actors/favourites](https://movie-app-36rr.onrender.com/actors/favourites)
 
 ### Routing
 
+- /reviews/:id - Review details page
+- /reviews/form - Write a review page
 - /movies/favourites - Favourites page
 - /movies/upcoming - Upcoming page
 - /movies/:id - Movie details page
-- /reviews/:id - Review details page
-- /reviews/form - Write a review page
 
 #### New implementations [exam]
 
-- /movies/upcoming - Popular page
-
-## Additional routes:
-
-[If relevant, state what aspects of your app are protected (i.e. require authentication) and what is public.]
-
-### Third Party Components/Integration
-
-[Describe the level of integration/use or other API's or third party components]
-
-- React Components
-- Third party/custom APIs
-- Authentication
-- etc...
-
-### Independent learning (If relevant)
-
-Itemize the technologies/techniques you researched independently and adopted in your project,
-i.e. aspects not covered in the lectures/labs. Include the source code filenames that illustrate these
-(we do not require code excerpts) and provide references to the online resources that helped you (articles/blogs).
+- /movies/popular - Popular movies page
+- /tvseries - TV Series page
+- /tvseries/:id - TV Serie detail page
+- /tvseries/favourites - Favourite TV Series page
+- /actors - Actors page
+- /actors/:id - Actor detail page
+- /actors/favourites - Favourite actors page

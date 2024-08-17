@@ -61,7 +61,7 @@ const MediaDetails: React.FC<MediaDetailsProps & { images: MovieImage[] }> = (
       <Typography variant='h5' component='h3'>
         {isMovie(media) && media.title}
         {isTVSerie(media) && media.name}
-        {isActor(media) && media.name}
+        {isActor(media) && !isTVSerie(media) && media.name}
       </Typography>
 
       <Typography variant='h6' component='p'>
